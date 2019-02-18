@@ -1,0 +1,34 @@
+task_list
+    id                      自增长id
+    name                    更新包名称
+    developer               提测人
+    tester                  测试员
+    repositoryid            仓库id，对应repository表（一对多）
+    is_publish              是否申请发版
+    envir                   所在环境（1：开发环境，2：测试环境：3预生产环境（dev）,4：生产环境）
+    notice_tester           测试须知
+    notice_operator         运维须知
+    system                  系统/模块
+    sql                     需要执行的数据库
+    creator                 创建人
+    createtime              创建时间
+    updatetime              更新时间
+
+repository
+    id                      自增长id
+    name                    仓库名
+    branch                  分支
+    tag                     标签名称
+
+log
+    id                      自增长id
+    operator                操作人
+    opetate                 操作
+    operate_time            操作时间
+    detail                  操作详情
+
+operate
+    id                      自增长id
+    type                    操作类型（1：开发提交任务；2：更新到测试环境；3：更新到预生产环境；4：更新到生产环境）
+
+

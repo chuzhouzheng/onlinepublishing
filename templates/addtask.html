@@ -1,0 +1,87 @@
+{#{% load static %}#}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加更新包</title>
+    <link href="../static/style/mystyle.css" type="text/css"/>
+    <style>
+        .item em{
+            color: red;
+            font-style: normal;
+        }
+    </style>
+</head>
+<body>
+<h1>新建更新包</h1>
+{#<img src="{% static "fengjing1.jpg" %}" alt="">#}
+<form action="addtask" method="post">
+    {% csrf_token %}
+    <div class="item">
+        <span  class="label"><em> * </em>更新包名称：</span>
+        <input type="text" name="name" value="">
+    </div>
+
+    <div class="item">
+        <span class="label">代码仓库：</span>
+        <input type="text" name="repository" value="">
+
+        <span class="label">分支：</span>
+        <input type="text" name="branch" value="">
+
+        <span class="label">tag名称：</span>
+        <input type="text" name="tag" value="">
+    </div>
+
+    <div class="item">
+        <span class="label">开发员：</span>
+        <input type="text" name="developer" value="">
+    </div>
+
+    <div class="item">
+        <span class="label">测试员：</span>
+        <input type="text" name="tester" value="">
+    </div>
+
+    <div class="item">
+        <span class="label">所属项目：</span>
+        <input type="text" name="system" value="">
+    </div>
+
+    <div class="item">
+        <span class="label">是否申请发版：</span>
+        {% if task.is_publish == 1 %}
+            <input type="radio" name="is_publish" value="0">否
+            <input type="radio" checked name="is_publish" value="1">是
+        {% else %}
+            <input type="radio" checked name="is_publish" value="0">否
+            <input type="radio" name="is_publish" value="1">是
+        {% endif %}
+    </div>
+
+    <div class="item">
+        <span class="label">测试须知：</span>
+        <input type="text" name="notice_tester" value="">
+
+    </div>
+
+{#    <textarea name="memo" id="memo" cols="30" rows="10">#}
+{#        </textarea>#}
+
+    <div class="item">
+        <span class="label">运维须知：</span>
+        <input type="text" name="notice_operator" value="">
+    </div>
+
+    <div class="item">
+        <span class="label">需要执行的sql：</span>
+        <input type="text" name="sql" value="">
+    </div>
+
+    <div class="item">
+        <input type="submit" value="提交">
+    </div>
+
+</form>
+</body>
+</html>

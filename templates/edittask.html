@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>编辑更新包</title>
+    <link rel="stylesheet" href="../static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link href="../static/style/mystyle.css" type="text/css"/>
+    <style>
+        .item em{
+            color: red;
+            font-style: normal;
+        }
+    </style>
+</head>
+<body>
+<h1>{{ task.name }}</h1>
+<form action="edittask?id={{ task.id }}" method="post">
+    {% csrf_token %}
+    <div class="item">
+        <span  class="label">更新包名称：</span>
+        <input type="text" name="name" value="{{ task.name }}">
+    </div>
+
+    <div class="item">
+        <span class="label">代码仓库：</span>
+        <input type="text" name="repository" value="{{ task.repository_id.name }}">
+
+        <span class="label">分支：</span>
+        <input type="text" name="branch" value="{{ task.repository_id.branch }}">
+
+        <span class="label">tag名称：</span>
+        <input type="text" name="tag" value="{{ task.repository_id.tag }}">
+    </div>
+
+    <div class="item">
+        <span class="label">开发员：</span>
+        <input type="text" name="developer" value="{{ task.developer }}">
+    </div>
+
+    <div class="item">
+        <span class="label">测试员：</span>
+        <input type="text" name="tester" value="{{ task.tester }}">
+    </div>
+
+    <div class="item">
+        <span class="label">所属项目：</span>
+        <input type="text" name="system" value="{{ task.system }}">
+    </div>
+
+    <div class="item">
+        <span class="label">是否申请发版：</span>
+        {% if task.is_publish == 1 %}
+            <input type="radio" name="is_publish" value="0">否
+            <input type="radio" checked name="is_publish" value="1">是
+        {% else %}
+            <input type="radio" checked name="is_publish" value="0">否
+            <input type="radio" name="is_publish" value="1">是
+        {% endif %}
+    </div>
+
+    <div class="item">
+        <span class="label">测试须知：</span>
+        <input type="text" name="notice_tester" value="{{ task.notice_tester }}">
+
+    </div>
+
+{#    <textarea name="memo" id="memo" cols="30" rows="10">#}
+{#        </textarea>#}
+
+    <div class="item">
+        <span class="label">运维须知：</span>
+        <input type="text" name="notice_operator" value="{{ task.notice_operator }}">
+    </div>
+
+    <div class="item">
+        <span class="label">需要执行的sql：</span>
+        <input type="text" name="sql" value="{{ task.sql }}">
+    </div>
+
+    <div class="item">
+        <input type="submit" value="提交">
+    </div>
+
+</form>
+
+<script src="../static/jquery-3.3.1.js"></script>
+<script src="../static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+</body>
+</html>

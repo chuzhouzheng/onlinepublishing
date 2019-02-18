@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>更新包列表</title>
+    <link href="../static/style/mystyle.css" type="text/css"/>
+</head>
+<body>
+<h1>更新包列表</h1>
+
+<div class="search">
+    <span class="label">更新包名称：</span>
+    <input type="text" name="keyword" value="">
+    <input type="submit" value="提交">
+    <a href="addtask">新增更新包</a>
+</div>
+<br>
+<div class="context">
+
+    <div class="items">
+        <table border="1">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>更新包名称</th>
+                <th>所属项目</th>
+                <th>是否需要申请发版</th>
+                <th>测试员</th>
+                <th>创建人</th>
+                <th>更新时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for task in tasks %}
+                <tr>
+                    <td>{{ task.id }}</td>
+                    <td>{{ task.name }}</td>
+                    <td>{{ task.system }}</td>
+                    {% if task.is_publish == 1 %}
+                        <td>是</td>
+                    {% else %}
+                        <td>否</td>
+                    {% endif %}
+                    <td>{{ task.tester }}</td>
+                    <td>{{ task.creator }}</td>
+                    <td>{{ task.updatetime|date:"Y-m-d H:i:s" }}</td>
+                    <td>
+                        <a href="edittask?id={{ task.id }}" target="_blank">编辑</a>
+                    </td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+
+
+    </div>
+
+
+</div>
+
+</body>
+</html>
