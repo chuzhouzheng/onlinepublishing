@@ -3,28 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <title>更新包列表</title>
+    <link rel="stylesheet" href="../static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
     <link href="../static/style/mystyle.css" type="text/css"/>
 </head>
 <body>
 <h1>更新包列表</h1>
 
-<div class="search">
-    <span class="label">更新包名称：</span>
-    <input type="text" name="keyword" value="">
-    <input type="submit" value="提交">
-    <a href="addtask">新增更新包</a>
+<div class="search row">
+    <div class="col-md-1">
+        <span>更新包名称：</span>
+    </div>
+    <div class="col-md-3">
+        <input type="text" name="keyword" value="" placeholder="请输入更新包名称关键字">
+        <input type="submit" value="提交">
+    </div>
+    <div class="col-md-3">
+        <a class="btn btn-primary" href="addtask">新建更新包</a>
+    </div>
+
 </div>
 <br>
 <div class="context">
 
     <div class="items">
-        <table border="1">
+        <table class="table table-striped">
             <thead>
             <tr>
                 <th>ID</th>
                 <th>更新包名称</th>
                 <th>所属项目</th>
-                <th>是否需要申请发版</th>
+                <th>是否申请发版</th>
                 <th>测试员</th>
                 <th>创建人</th>
                 <th>更新时间</th>
@@ -60,6 +68,9 @@
 
 
 </div>
+
+<script src="../static/jquery-3.3.1.js"></script>
+<script src="../static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 </body>
 </html>
