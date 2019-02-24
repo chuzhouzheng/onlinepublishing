@@ -20,6 +20,11 @@ repository
     branch                  分支
     tag                     标签名称
 
+task_repository_id
+    id                      自增长id
+    task_id                 任务id
+    repository_id           仓库id
+
 log
     id                      自增长id
     operator                操作人

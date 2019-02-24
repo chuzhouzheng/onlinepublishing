@@ -7,13 +7,12 @@
     <link rel="stylesheet" href="../static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
     <link href="../static/style/mystyle.css" type="text/css"/>
     <style>
-        .item em {
-            color: red;
-            font-style: normal;
-        }
+
     </style>
 </head>
 <body>
+
+
 <h1>{{ task.name }}</h1>
 
 <form action="edittask?id={{ task.id }}" method="post">
@@ -24,14 +23,14 @@
 
             <tr>
                 <th class="text-nowrap" scope="row">
-                    <span><em> * </em>更新包名称：</span>
+                    <span><em style="color: red"> * </em>更新包名称：</span>
                 </th>
                 <td colspan="6">
                     <input type="text" name="name" value="{{ task.name }}">
                 </td>
             </tr>
 
-            <tr>
+            <tr name="onerepository">
                 <th class="text-nowrap" scope="row">
                     <span>代码仓库：</span>
                 </th>
@@ -51,7 +50,7 @@
                     <input type="text" name="tag" value="{{ task.repository_id.tag }}">
                 </td>
                 <td colspan="1">
-                    <button type="button" class="btn btn-primary">添加仓库</button>
+                    <button type="button" class="btn btn-primary" name="addrespository">添加仓库</button>
                 </td>
             </tr>
 
@@ -137,89 +136,20 @@
         </table>
     </div>
 
-    {#    <div class="item row">#}
-    {#        <span><em> * </em>更新包名称：</span>#}
-    {#        <input class="col-md-8" type="text" name="name" value="{{ task.name }}">#}
-    {#    </div>#}
-    {#    <br/>#}
-    {##}
-    {#    <div class="item row">#}
-    {#        <span>代码仓库：</span>#}
-    {#        <input type="text" name="repository" value="{{ task.repository_id.name }}">#}
-    {##}
-    {#        <span>分支：</span>#}
-    {#        <input type="text" name="branch" value="{{ task.repository_id.branch }}">#}
-    {##}
-    {#        <span>tag名称：</span>#}
-    {#        <input type="text" name="tag" value="{{ task.repository_id.tag }}">#}
-    {#    </div>#}
-    {#    <br/>#}
-
-    {#    <div class="item row">#}
-    {#        <span>开发员：</span>#}
-    {#        <input type="text" name="developer" value="{{ task.developer }}">#}
-    {#    </div>#}
-    {#    <br/>#}
-
-    {#    <div class="item row">#}
-    {#        <span>测试员：</span>#}
-    {#        <input type="text" name="tester" value="{{ task.tester }}">#}
-    {#    </div>#}
-    {#    <br/>#}
-
-    {#    <div class="item row">#}
-    {#        <span>所属项目：</span>#}
-    {#        <input type="text" name="system" value="{{ task.system }}">#}
-    {#    </div>#}
-    {#    <br/>#}
-
-    {#    <div class="item row">#}
-    {#        <span>是否申请发版：</span>#}
-    {#        {% if task.is_publish == 1 %}#}
-    {#            <input type="radio" name="is_publish" value="0">否#}
-    {#            <input type="radio" checked name="is_publish" value="1">是#}
-    {#        {% else %}#}
-    {#            <input type="radio" checked name="is_publish" value="0">否#}
-    {#            <input type="radio" name="is_publish" value="1">是#}
-    {#        {% endif %}#}
-    {#    </div>#}
-    {#    <br/>#}
-
-{#    <div class="item row">#}
-{#        <span>测试须知：</span>#}
-{#        <br/>#}
-        {#            <input type="text" name="notice_tester" value="{{ task.notice_tester }}">#}
-{##}
-{#    </div>#}
-{#    <div>#}
-{#        <textarea name="notice_tester" cols="100" rows="10">{{ task.notice_tester }}</textarea>#}
-{#    </div>#}
-{#    <br/>#}
-
-
-{#    <div class="item row">#}
-{#        <span>运维须知：</span>#}
-        {#        <input type="text" name="notice_operator" value="{{ task.notice_operator }}">#}
-{#    </div>#}
-{#    <div>#}
-{#        <textarea name="notice_operator" cols="100" rows="10">{{ task.notice_operator }}</textarea>#}
-{#    </div>#}
-{#    <br/>#}
-
-{#    <div class="item">#}
-{#        <span>需要执行的sql：</span>#}
-{#        <input type="text" name="sql" value="{{ task.sql }}">#}
-{#    </div>#}
-{#    <br/>#}
-
-{#    <div class="item">#}
-{#        <input type="submit" value="提交">#}
-{#    </div>#}
-{#    <br/>#}
-
 </form>
 
 <script src="../static/jquery-3.3.1.js"></script>
 <script src="../static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+
+<script>
+    $("button[name='addrespository']").click(function(){
+        var addrepository_ele='<tr><th class="text-nowrap" scope="row"><span>代码仓库：</span></th><td colspan="1"><input type="text" name="repository" value="{{ task.repository_id.name }}"></td><td colspan="1"><span>分支：</span></td><td colspan="1"><input type="text" name="branch" value="{{ task.repository_id.branch }}"></td><td colspan="1"><span>tag名称：</span></td><td colspan="1"><input type="text" name="tag" value="{{ task.repository_id.tag }}"></td><td colspan="1"><button type="button" class="btn btn-primary" name="removerespository">删除</button></td></tr>';
+        $("tr[name='onerepository']").after(addrepository_ele);
+    });
+
+    $("tbody").on("click","button[name='removerespository']",function(){
+        $(this).parent().parent().remove();
+     });
+</script>
 </body>
 </html>

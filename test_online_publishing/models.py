@@ -6,7 +6,7 @@ class TaskList(models.Model):
     id = models.AutoField(primary_key=True, auto_created=True)
     name = models.CharField(max_length=256, null=False, help_text='更新包名称', verbose_name='更新包名称')
     envir = models.ForeignKey(to='Envir', on_delete=True, db_constraint=False, default=1, verbose_name='所在环境（1：开发环境；5：测试环境；10：预生产环境（dev）；15：生产环境）')
-    repository_id = models.ForeignKey(to='Repository', on_delete=True, db_constraint=False, default=None, verbose_name='代码仓库id，对应repository表')
+    repository_id = models.ManyToManyField(to='Repository', db_constraint=False, default=None, verbose_name='代码仓库id，对应repository表')
     developer = models.CharField(max_length=256, null=True, verbose_name='开发员')
     tester = models.CharField(max_length=256, null=True, verbose_name='测试员')
     is_publish = models.SmallIntegerField(null=True, default='1', verbose_name='是否申请发版（1：申请发版，0：不用申请发版）')
@@ -19,7 +19,7 @@ class TaskList(models.Model):
     updatetime = models.DateTimeField(auto_now=True, verbose_name='更新时间')
 
     class Meta:
-        db_table = 'task_list'
+        db_table = 'task'
         verbose_name_plural = '更新包列表'
 
 

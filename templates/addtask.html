@@ -7,10 +7,7 @@
     <link rel="stylesheet" href="../static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
     <link href="../static/style/mystyle.css" type="text/css"/>
     <style>
-        .item em{
-            color: red;
-            font-style: normal;
-        }
+
     </style>
 </head>
 <body>
@@ -25,14 +22,14 @@
 
             <tr>
                 <th class="text-nowrap" scope="row">
-                    <span><em> * </em>更新包名称：</span>
+                    <span><em style="color: red"> * </em>更新包名称：</span>
                 </th>
                 <td colspan="6">
                     <input type="text" name="name" value="{{ task.name }}">
                 </td>
             </tr>
 
-            <tr>
+            <tr name="onerepository">
                 <th class="text-nowrap" scope="row">
                     <span>代码仓库：</span>
                 </th>
@@ -52,7 +49,7 @@
                     <input type="text" name="tag" value="{{ task.repository_id.tag }}">
                 </td>
                 <td colspan="1">
-                    <button type="button" class="btn btn-primary">添加仓库</button>
+                    <button type="button" class="btn btn-primary" name="addrepository">添加仓库</button>
                 </td>
             </tr>
 
@@ -207,6 +204,18 @@
 
 <script src="../static/jquery-3.3.1.js"></script>
 <script src="../static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+<script>
+    $("button[name='addrepository']").click(function(){
+        var addrepository_ele='<tr><th class="text-nowrap" scope="row"><span>代码仓库：</span></th><td colspan="1"><input type="text" name="repository" value="{{ task.repository_id.name }}"></td><td colspan="1"><span>分支：</span></td><td colspan="1"><input type="text" name="branch" value="{{ task.repository_id.branch }}"></td><td colspan="1"><span>tag名称：</span></td><td colspan="1"><input type="text" name="tag" value="{{ task.repository_id.tag }}"></td><td colspan="1"><button type="button" class="btn btn-primary" name="removerepository">删除</button></td></tr>';
+        $("tr[name='onerepository']").after(addrepository_ele);
+    });
+
+    $("tbody").on("click","button[name='removerepository']",function(){
+        $(this).parent().parent().remove();
+     });
+
+
+</script>
 
 </body>
 </html>

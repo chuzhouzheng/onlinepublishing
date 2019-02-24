@@ -5,13 +5,43 @@
     <title>index</title>
 </head>
 <body>
-<h1>更新包列表</h1>
+<h1>展示jQuery中on()和click()的区别</h1>
 
-<form action="">
-    <label for="">更新包名称：</label>
-    <input type="text" >
-    <input type="submit" value="搜索">
-</form>
+<p>
+	<span>点击生成新按钮。NewOn生成的Delete按钮行为用on()实现，NewClick生成的Delete按钮行为用click()实现。</span>
+</p>
+<div class="test">
+	<button class="new" id="newon">NewOn</button>
+	<button class="new" id="newclick">NewClick</button>
+	<ul class="li">
+		<li>原先的HTML元素on<button class="deleteon">Delete</button></li>
+		<li>原先的HTML元素click<button class="deleteclick">Delete</button></li>
+	</ul>
+</div>
+
+<script src="../static/jquery-3.3.1.js"></script>
+<script src="../static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+
+<script>
+
+    $("#newclick").click(function(){
+	$(".li").append('<li class="li2">动态添加的HTML元素click<button class="deleteclick">Delete</button></li>');
+});
+$("#newon").click(function(){
+	$(".li").append('<li class="li2">动态添加的HTML元素on<button class="deleteon">Delete</button></li>');
+});
+$(".delete").click(function(){
+	$(this).parent().remove();
+});
+
+$(".li2").on('click', ".deleteon", function(){
+	$(this).parent().remove();
+})
+$(".deleteclick").click(function(){
+	$(this).parent().remove();
+});
+
+</script>
 
 </body>
 </html>
