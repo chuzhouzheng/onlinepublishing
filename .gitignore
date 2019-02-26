@@ -1,4 +1,4 @@
 *.log
 *.pyc
 /.idea
-/migrations
+/test_online_publishing/migrations
