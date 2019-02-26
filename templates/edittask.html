@@ -195,7 +195,7 @@
 
     </tbody>
 </table>
-<div class="logdetail">aaa</div>
+<div class="logdetail"></div>
 <div style="width:50%;height:600px;overflow:auto; float:right"></div>
 
 
@@ -263,8 +263,16 @@
             url: 'logdetail?id=' + id,
             type: 'get',
             success: function (data) {
-                console.log(data);
-                $(".logdetail").text(data);
+                data = data.split(",");
+                console.log(typeof(data));
+                var log_detail = '';
+                console.log(data.length);
+                for (var i=0;i<data.length;i++) {
+{#                    log_detail = log_detail + "<div>" + data[i] +"</div>"#}
+                    $(".logdetail").append("<div>" + data[i] +"</div>");
+                }
+
+{#                $(".logdetail").text(log_detail);#}
 
             }
         });
