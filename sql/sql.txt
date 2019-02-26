@@ -3,9 +3,9 @@ task_list
     name                    更新包名称
     developer               提测人
     tester                  测试员
-    repositoryid            仓库id，对应repository表（一对多）
+    repositoryid            仓库id，对应repository表（多对多）
     is_publish              是否申请发版
-    envir                   所在环境（1：开发环境，2：测试环境：3预生产环境（dev）,4：生产环境）
+    envir                   最新更新的环境（1：开发环境，2：测试环境：3预生产环境（dev）,4：生产环境）
     notice_tester           测试须知
     notice_operator         运维须知
     system                  系统/模块
@@ -27,13 +27,14 @@ task_repository_id
 
 log
     id                      自增长id
+    task_id                 任务id
     operator                操作人
     opetate                 操作
     operate_time            操作时间
     detail                  操作详情
 
-operate
+operate_type
     id                      自增长id
-    type                    操作类型（1：开发提交任务；2：更新到测试环境；3：更新到预生产环境；4：更新到生产环境）
+    type                    操作类型（1：开发提交任务；5：更新到本地环境；10：更新到dev环境；15：更新到dev2环境; 20：更新到生产环境）
 
 

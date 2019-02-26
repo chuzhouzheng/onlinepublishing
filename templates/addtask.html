@@ -25,7 +25,7 @@
                     <span><em style="color: red"> * </em>更新包名称：</span>
                 </th>
                 <td colspan="6">
-                    <input type="text" name="name" value="{{ task.name }}">
+                    <input type="text" name="name" value="">
                 </td>
             </tr>
 
@@ -34,19 +34,19 @@
                     <span>代码仓库：</span>
                 </th>
                 <td colspan="1">
-                    <input type="text" name="repository" value="{{ task.repository_id.name }}">
+                    <input type="text" name="repository" value="">
                 </td>
                 <td colspan="1">
                     <span>分支：</span>
                 </td>
                 <td colspan="1">
-                    <input type="text" name="branch" value="{{ task.repository_id.branch }}">
+                    <input type="text" name="branch" value="">
                 </td>
                 <td colspan="1">
                     <span>tag名称：</span>
                 </td>
                 <td colspan="1">
-                    <input type="text" name="tag" value="{{ task.repository_id.tag }}">
+                    <input type="text" name="tag" value="">
                 </td>
                 <td colspan="1">
                     <button type="button" class="btn btn-primary" name="addrepository">添加仓库</button>
@@ -58,7 +58,7 @@
                     <span>开发员：</span>
                 </th>
                 <td colspan="6">
-                    <input type="text" name="developer" value="{{ task.developer }}">
+                    <input type="text" name="developer" value="">
                 </td>
             </tr>
 
@@ -67,7 +67,7 @@
                     <span>测试员：</span>
                 </th>
                 <td colspan="6">
-                    <input type="text" name="tester" value="{{ task.tester }}">
+                    <input type="text" name="tester" value="">
                 </td>
             </tr>
 
@@ -76,7 +76,7 @@
                     <span>所属项目：</span>
                 </th>
                 <td colspan="6">
-                    <input type="text" name="system" value="{{ task.system }}">
+                    <input type="text" name="system" value="">
                 </td>
             </tr>
 
@@ -85,13 +85,8 @@
                     <span>是否申请发版：</span>
                 </th>
                 <td colspan="6">
-                    {% if task.is_publish == 1 %}
-                        <input type="radio" name="is_publish" value="0">否
-                        <input type="radio" checked name="is_publish" value="1">是
-                    {% else %}
-                        <input type="radio" checked name="is_publish" value="0">否
-                        <input type="radio" name="is_publish" value="1">是
-                    {% endif %}
+                <input type="radio" checked name="is_publish" value="0">否
+                <input type="radio"  name="is_publish" value="1">是
                 </td>
             </tr>
 
@@ -100,7 +95,7 @@
                     <span>测试须知：</span>
                 </th>
                 <td colspan="6">
-                    <textarea name="notice_tester" cols="100" rows="10">{{ task.notice_tester }}</textarea>
+                    <textarea name="notice_tester" cols="100" rows="10"></textarea>
                 </td>
             </tr>
 
@@ -109,7 +104,7 @@
                     <span>运维须知：</span>
                 </th>
                 <td colspan="6">
-                    <textarea name="notice_operator" cols="100" rows="10">{{ task.notice_operator }}</textarea>
+                    <textarea name="notice_operator" cols="100" rows="10"></textarea>
                 </td>
             </tr>
 
@@ -118,7 +113,7 @@
                     <span>需要执行的sql：</span>
                 </th>
                 <td colspan="6">
-                    <input type="text" name="sql" value="{{ task.sql }}">
+                    <input type="text" name="sql" value="">
                 </td>
             </tr>
 
@@ -134,79 +129,13 @@
             </tbody>
         </table>
     </div>
-
-{#    <div class="item">#}
-{#        <span class="label"><em> * </em>更新包名称：</span>#}
-{#        <input type="text" name="name" value="">#}
-{#    </div>#}
-{##}
-{#    <div class="item">#}
-{#        <span class="label">代码仓库：</span>#}
-{#        <input type="text" name="repository" value="">#}
-{##}
-{#        <span class="label">分支：</span>#}
-{#        <input type="text" name="branch" value="">#}
-{##}
-{#        <span class="label">tag名称：</span>#}
-{#        <input type="text" name="tag" value="">#}
-{#    </div>#}
-{##}
-{#    <div class="item">#}
-{#        <span class="label">开发员：</span>#}
-{#        <input type="text" name="developer" value="">#}
-{#    </div>#}
-{##}
-{#    <div class="item">#}
-{#        <span class="label">测试员：</span>#}
-{#        <input type="text" name="tester" value="">#}
-{#    </div>#}
-{##}
-{#    <div class="item">#}
-{#        <span class="label">所属项目：</span>#}
-{#        <input type="text" name="system" value="">#}
-{#    </div>#}
-{##}
-{#    <div class="item">#}
-{#        <span class="label">是否申请发版：</span>#}
-{#        {% if task.is_publish == 1 %}#}
-{#            <input type="radio" name="is_publish" value="0">否#}
-{#            <input type="radio" checked name="is_publish" value="1">是#}
-{#        {% else %}#}
-{#            <input type="radio" checked name="is_publish" value="0">否#}
-{#            <input type="radio" name="is_publish" value="1">是#}
-{#        {% endif %}#}
-{#    </div>#}
-{##}
-{#    <div class="item">#}
-{#        <span class="label">测试须知：</span>#}
-{#        <input type="text" name="notice_tester" value="">#}
-{##}
-{#    </div>#}
-{##}
-{#    <textarea name="memo" id="memo" cols="30" rows="10">#}
-{#        </textarea>#}
-{##}
-{#    <div class="item">#}
-{#        <span class="label">运维须知：</span>#}
-{#        <input type="text" name="notice_operator" value="">#}
-{#    </div>#}
-{##}
-{#    <div class="item">#}
-{#        <span class="label">需要执行的sql：</span>#}
-{#        <input type="text" name="sql" value="">#}
-{#    </div>#}
-{##}
-{#    <div class="item">#}
-{#        <input type="submit" value="提交">#}
-{#    </div>#}
-
 </form>
 
 <script src="../static/jquery-3.3.1.js"></script>
 <script src="../static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 <script>
     $("button[name='addrepository']").click(function(){
-        var addrepository_ele='<tr><th class="text-nowrap" scope="row"><span>代码仓库：</span></th><td colspan="1"><input type="text" name="repository" value="{{ task.repository_id.name }}"></td><td colspan="1"><span>分支：</span></td><td colspan="1"><input type="text" name="branch" value="{{ task.repository_id.branch }}"></td><td colspan="1"><span>tag名称：</span></td><td colspan="1"><input type="text" name="tag" value="{{ task.repository_id.tag }}"></td><td colspan="1"><button type="button" class="btn btn-primary" name="removerepository">删除</button></td></tr>';
+        var addrepository_ele='<tr><th class="text-nowrap" scope="row"><span>代码仓库：</span></th><td colspan="1"><input type="text" name="repository" value=""></td><td colspan="1"><span>分支：</span></td><td colspan="1"><input type="text" name="branch" value=""></td><td colspan="1"><span>tag名称：</span></td><td colspan="1"><input type="text" name="tag" value=""></td><td colspan="1"><button type="button" class="btn btn-primary" name="removerepository">删除</button></td></tr>';
         $("tr[name='onerepository']").after(addrepository_ele);
     });
 

@@ -28,8 +28,11 @@ class AddTask(View):
 
         name = request.POST.get('name')
         repository = request.POST.get('repository')
+        # repositorys = request.POST.getlist('repository')
         branch = request.POST.get('branch')
+        # branchs = request.POST.getlist('branch')
         tag = request.POST.get('tag')
+        # tags = request.POST.getlist('tag')
         developer = request.POST.get('developer')
         tester = request.POST.get('tester')
         system = request.POST.get('system')
@@ -46,10 +49,10 @@ class AddTask(View):
 
         envir_obj = models.Envir.objects.get(id=1)
 
-        models.TaskList.objects.create(
+        task_obj = models.TaskList.objects.create(
             name=name,
             envir=envir_obj,
-            repository_id=repository_obj,
+            # repositorys=repository_obj,
             developer=developer,
             tester=tester,
             is_publish=is_publish,
@@ -60,6 +63,8 @@ class AddTask(View):
             creator=1,
         )
 
+        task_obj.repositorys.add(repository_obj)
+
         return redirect('/publish/tasklist')
 
 
@@ -67,12 +72,13 @@ class EditTask(View):
     def get(self, request):
         task_id = request.GET.get("id")
         task_obj = models.TaskList.objects.filter(id=task_id)[0]
-        return  render(request, 'edittask.html', {"task":task_obj})
+        repository_objs = task_obj.repositorys.all()
+        log_objs = models.Log.objects.filter(task_id=task_id)
+        return  render(request, 'edittask.html', {"task":task_obj, "repositorys":repository_objs, "logs":log_objs})
         # task = serializers.serialize("json", task_obj)
         # return render(request, 'edittask.html',{"task":task})
 
     def post(self, request):
-        print(request.POST)
         task_id = request.GET.get("id")
         name = request.POST.get('name')
         repository = request.POST.get('repository')
@@ -86,19 +92,53 @@ class EditTask(View):
         notice_operator = request.POST.get('notice_operator')
         sql = request.POST.get('sql')
 
-        task_obj = models.TaskList.objects.filter(id=task_id)
-        task_obj.update(
-            name=name,
-            # envir=1,
-            # repository_id=1,
-            developer=developer,
-            tester=tester,
-            is_publish=is_publish,
-            system=system,
-            notice_tester=notice_tester,
-            notice_operator=notice_operator,
-            sql=sql,
-            creator=1,
+        repository_obj = models.Repository.objects.create(
+            name=repository,
+            branch=branch,
+            tag=tag,
         )
+        print(models.Repository.objects.filter(id=repository_obj.id))
+
+        task_obj = models.TaskList.objects.filter(id=task_id)[0]
+        task_obj.name = name
+        # task_obj.envir=1
+        # task_obj.repositorys = models.Repository.objects.filter(id=repository_obj.id)
+        task_obj.developer = developer
+        task_obj.tester = tester
+        task_obj.is_publish = is_publish
+        task_obj.system = system
+        task_obj.notice_tester = notice_tester
+        task_obj.notice_operator = notice_operator
+        task_obj.sql = sql
+        task_obj.creator = 1
+        task_obj.save()
+
+        task_obj.repositorys.set(models.Repository.objects.filter(id=repository_obj.id))
 
         return redirect('/publish/tasklist')
+
+
+class AddLog(View):
+    def get(self, request):
+        pass
+
+    def post(self, request):
+        task_id = request.POST.get("task_id")
+        operate_tpye_id = request.POST.get('operate_tpye_id')
+        log_obj = models.Log.objects.create(
+            task = models.TaskList.objects.filter(id=task_id)[0],
+            operator = 1,
+            operate_type = models.OperateType.objects.filter(id=operate_tpye_id)[0],
+            detail = "更新到本地环境"
+        )
+
+        return HttpResponse("aaaaaaaa")
+
+
+class GetLogDetail(View):
+    def get(self, request):
+        log_id = request.GET.get('id')
+        log_obj = models.Log.objects.filter(id=log_id)[0]
+        log_detail = log_obj.detail
+
+        return HttpResponse(log_detail)
