@@ -1,75 +1,77 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>更新包列表</title>
-    <link rel="stylesheet" href="../static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
-    <link href="../static/style/mystyle.css" type="text/css"/>
-</head>
-<body>
-<h1>更新包列表</h1>
+{# 基本母版 #}
+{% extends 'base.html' %}
 
-<div class="search row">
-    <div class="col-md-4">
+{# 块 #}
+{% block title %}
+    更新包列表_xGo在线发布系统
+{% endblock %}
+
+{% block page-main %}
+
+    <h1>更新包列表</h1>
+
+    <div class="search row">
+        <div class="col-md-4">
         <span>更新包名称：
             <input type="text" name="keyword" value="" placeholder="请输入更新包名称关键字">
             <input type="submit" value="提交">
         </span>
+        </div>
+        <div class="col-md-3">
+            <a class="btn btn-primary" href="/publish/addtask/" target="_blank">新建更新包</a>
+        </div>
+
     </div>
-    <div class="col-md-3">
-        <a class="btn btn-primary" href="addtask" target="_blank">新建更新包</a>
-    </div>
+    <br>
+    <div class="context">
 
-</div>
-<br>
-<div class="context">
-
-    <div class="items">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>更新包名称</th>
-                <th>所属项目</th>
-                <th>是否申请发版</th>
-                <th>测试员</th>
-                <th>创建人</th>
-                <th>更新时间</th>
-                <th>操作</th>
-            </tr>
-            </thead>
-            <tbody>
-
-            {% for task in tasks %}
+        <div class="items">
+            <table class="table table-striped">
+                <thead>
                 <tr>
-                    <td>{{ task.id }}</td>
-                    <td>{{ task.name }}</td>
-                    <td>{{ task.system }}</td>
-                    {% if task.is_publish == 1 %}
-                        <td>是</td>
-                    {% else %}
-                        <td>否</td>
-                    {% endif %}
-                    <td>{{ task.tester }}</td>
-                    <td>{{ task.creator }}</td>
-                    <td>{{ task.updatetime|date:"Y-m-d H:i:s" }}</td>
-                    <td>
-                        <a href="edittask?id={{ task.id }}" target="_blank">编辑</a>
-                    </td>
+                    <th>ID</th>
+                    <th>更新包名称</th>
+                    <th>所属项目</th>
+                    <th>是否申请发版</th>
+                    <th>测试员</th>
+                    <th>创建人</th>
+                    <th>更新时间</th>
+                    <th>操作</th>
                 </tr>
-            {% endfor %}
+                </thead>
+                <tbody>
 
-            </tbody>
-        </table>
+                {% for task in tasks %}
+                    <tr>
+                        <td>{{ task.id }}</td>
+                        <td>{{ task.name }}</td>
+                        <td>{{ task.system }}</td>
+                        {% if task.is_publish == 1 %}
+                            <td>是</td>
+                        {% else %}
+                            <td>否</td>
+                        {% endif %}
+                        <td>{{ task.tester }}</td>
+                        <td>{{ task.creator }}</td>
+                        <td>{{ task.updatetime|date:"Y-m-d H:i:s" }}</td>
+                        <td>
+                            <a href="/publish/edittask?id={{ task.id }}" target="_blank">编辑</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
 
 
+        </div>
     </div>
 
+    {#分页组件#}
+    <nav aria-label="Page navigation" class="text-right">
+        <ul class="pagination">
+            {{ page_html|safe }}
+        </ul>
+    </nav>
 
-</div>
-
-<script src="../static/jquery-3.3.1.js"></script>
-<script src="../static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-
-</body>
-</html>
+{% endblock %}

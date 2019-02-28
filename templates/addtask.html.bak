@@ -1,13 +1,16 @@
-{# 基本母版 #}
-{% extends 'base.html' %}
+{#{% load static %}#}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加更新包</title>
+    <link rel="stylesheet" href="../static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link href="../static/style/mystyle.css" type="text/css"/>
+    <style>
 
-{# 块 #}
-{% block title %}
-    新建更新包_xGo在线发布系统
-{% endblock %}
-
-{% block page-main %}
-
+    </style>
+</head>
+<body>
 <h1>新建更新包</h1>
 {#<img src="{% static "fengjing1.jpg" %}" alt="">#}
 <form action="addtask" method="post">
@@ -143,4 +146,5 @@
 
 </script>
 
-{% endblock %}
+</body>
+</html>

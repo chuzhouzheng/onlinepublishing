@@ -4,13 +4,32 @@ from django.core import serializers
 from django.views import View
 from test_online_publishing import models
 from rest_framework.views import APIView
+from django.contrib import auth
+from common.mypage import Pagination
 
 
 # Create your views here.
-class TaskList(View):
+class TaskList(APIView):
     def get(self, request):
-        all_task = models.TaskList.objects.all().values()
-        return render(request, 'tasklist.html', {"tasks": all_task})
+        try:
+            if request.GET.get('page'):
+                page = int(request.GET.get('page'))
+            else:
+                page = 1
+        except:
+            return HttpResponse('请求出错')
+
+        all_task = models.TaskList.objects.all()
+        page_obj = Pagination(current_page=page, total_count=all_task.count(),
+                          base_url='/publish/tasklist/',
+                          per_page=10, max_page=20)
+        task_list = all_task[page_obj.page_start:page_obj.page_end]
+        page_html = page_obj.page_html
+
+        return render(request, 'tasklist.html', {
+            "tasks": task_list.values(),
+            'page_html': page_html,
+            })
 
         # tasks = serializers.serialize("json", all_task)
         # return render(request, 'tasklist.html',{"tasks":tasks})
@@ -20,7 +39,7 @@ class TaskList(View):
         return render(request, 'tasklist.html')
 
 
-class AddTask(View):
+class AddTask(APIView):
     def get(self, request):
         return render(request, 'addtask.html')
 
@@ -69,7 +88,7 @@ class AddTask(View):
         return redirect('/publish/tasklist')
 
 
-class EditTask(View):
+class EditTask(APIView):
     def get(self, request):
         task_id = request.GET.get("id")
         task_obj = models.TaskList.objects.filter(id=task_id)[0]
@@ -119,7 +138,7 @@ class EditTask(View):
         return redirect('/publish/tasklist')
 
 
-class AddLog(View):
+class AddLog(APIView):
     def get(self, request):
         pass
 
@@ -132,23 +151,23 @@ class AddLog(View):
             exec_result = os.popen(r"cd D:/git/mywork/test").read()
             os.popen("d:")
             # update_detail = update_detail + r"cd D:/git/mywork/test" + '\n' + str(exec_result) + '\n'
-            update_detail.append(r"cd D:/git/mywork/test")
-            update_detail.append(str(exec_result))
+            update_detail.append(r"执行命令：    cd D:/git/mywork/test")
+            update_detail.append("执行结果：    "+str(exec_result))
 
             exec_result = os.popen("git pull").read()
             # update_detail = update_detail + "git pull" + '\n' + str(exec_result) + '\n'
-            update_detail.append("git pull")
-            update_detail.append(str(exec_result))
+            update_detail.append("执行命令：    git pull")
+            update_detail.append("执行结果：    "+str(exec_result))
 
             exec_result = os.popen("git checkout master").read()
             # update_detail = update_detail + "git checkout master" + '\n' + str(exec_result) + '\n'
-            update_detail.append("git checkout master")
-            update_detail.append(str(exec_result))
+            update_detail.append("执行命令：    git checkout master")
+            update_detail.append("执行结果：    "+str(exec_result))
 
             exec_result = os.popen("git pull").read()
             # update_detail = update_detail + "git pull" + '\n' + str(exec_result) + '\n'
-            update_detail.append("git pull")
-            update_detail.append(str(exec_result))
+            update_detail.append("执行命令：    git pull")
+            update_detail.append("执行结果：    "+str(exec_result))
             print(update_detail)
 
 
@@ -162,7 +181,7 @@ class AddLog(View):
         return HttpResponse("更新成功")
 
 
-class GetLogDetail(View):
+class GetLogDetail(APIView):
     def get(self, request):
         log_id = request.GET.get('id')
         log_obj = models.Log.objects.filter(id=log_id)[0]

@@ -1,12 +1,17 @@
-{# 基本母版 #}
-{% extends 'base.html' %}
+{#{% load static %}#}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>编辑更新包</title>
+    <link rel="stylesheet" href="../static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/sweetalert/sweetalert.css">
+    <link href="../static/style/mystyle.css" type="text/css"/>
+    <style>
 
-{# 块 #}
-{% block title %}
-    编辑更新包_xGo在线发布系统
-{% endblock %}
-
-{% block page-main %}
+    </style>
+</head>
+<body>
 
 <h1>{{ task.name }}</h1>
 
@@ -277,4 +282,5 @@
 
 </script>
 
-{% endblock %}
+</body>
+</html>
