@@ -56,6 +56,7 @@ class PasswordChange(APIView):
             return render(request, 'password_change.html', {
                 "msg":msg,
             })
+
         if request.user.check_password(old_password):
             return redirect('/publish/tasklist/')
         else:
