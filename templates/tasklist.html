@@ -9,19 +9,21 @@
 {% block page-main %}
 
     <h1>更新包列表</h1>
-
-    <div class="search row">
-        <div class="col-md-4">
-        <span>更新包名称：
-            <input type="text" name="keyword" value="" placeholder="请输入更新包名称关键字">
-            <input type="submit" value="提交">
-        </span>
+    <form action="" method="post">
+    {% csrf_token %}
+        <div class="search row">
+            <div class="col-md-6">
+                <span>更新包名称：
+                    <input style="width: 500px" type="text" name="keyword" value="" placeholder="请输入更新包名称关键字">
+                    <input type="submit" value="提交">
+                </span>
+            </div>
+            <div class="col-md-3">
+                <a class="btn btn-primary" href="/publish/addtask/" target="_blank">新建更新包</a>
+            </div>
         </div>
-        <div class="col-md-3">
-            <a class="btn btn-primary" href="/publish/addtask/" target="_blank">新建更新包</a>
-        </div>
+    </form>
 
-    </div>
     <br>
     <div class="context">
 

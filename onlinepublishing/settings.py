@@ -48,10 +48,11 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'common.auth_middleware.CheckSession',
 ]
 
 ROOT_URLCONF = 'onlinepublishing.urls'
@@ -72,6 +73,11 @@ TEMPLATES = [
         },
     },
 ]
+
+
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR,  'templates'),
+)
 
 WSGI_APPLICATION = 'onlinepublishing.wsgi.application'
 

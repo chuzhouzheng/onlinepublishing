@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>登录_xGo在线发布系统</title>
+    <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/fontawesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/login.css">
+</head>
+
+<body>
+<div class="top">
+    <div id="branding">
+        <h1 style="padding: 0; margin: 0 20px 0 0;" id="site-name">xGo在线发布系统</h1>
+    </div>
+</div>
+
+<!-- Container -->
+<div id="container" class="login" align="center">
+
+    <!-- Header -->
+    <div id="header">
+        <h1 id="site-name">登录</h1>
+    </div>
+    <!-- END Header -->
+
+    <!-- Content -->
+    <div id="content" class="colM">
+        <div id="content-main">
+            <form action="/publish/login" method="post" id="login-form">
+                {% csrf_token %}
+
+                <div class="form-row">
+                    <label class="required" for="id_username">用户名:</label>
+                    <input type="text" name="username" required="" id="id_username" value="root">
+                </div>
+
+                <div class="form-row">
+
+                    <label class="required" for="id_password">密码:</label>
+                    <input type="password" name="password" required="" id="id_password" value="root123456">
+                </div>
+                <div class="submit-row">
+                    <input class="btn btn-primary" type="submit" value="登录">
+                </div>
+            </form>
+            {% if msg %}
+                <br/>
+                <div class="alert alert-danger" role="alert">{{ msg }}</div>
+            {% endif %}
+        </div>
+
+        <br class="clear">
+    </div>
+    <!-- END Content -->
+
+    <div id="footer"></div>
+</div>
+<!-- END Container -->
+
+
+</body>
+</html>

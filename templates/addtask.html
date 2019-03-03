@@ -8,139 +8,140 @@
 
 {% block page-main %}
 
-<h1>新建更新包</h1>
-{#<img src="{% static "fengjing1.jpg" %}" alt="">#}
-<form action="addtask" method="post">
-    {% csrf_token %}
+    <h1>新建更新包</h1>
+    {#<img src="{% static "fengjing1.jpg" %}" alt="">#}
+    <form action="addtask" method="post">
+        {% csrf_token %}
 
-<div class="table-responsive">
-        <table class="table table-bordered table-striped" border="1">
-            <tbody>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped" border="1">
+                <tbody>
 
-            <tr>
-                <th class="text-nowrap" scope="row">
-                    <span><em style="color: red"> * </em>更新包名称：</span>
-                </th>
-                <td colspan="6">
-                    <input type="text" name="name" value="">
-                </td>
-            </tr>
+                <tr>
+                    <th class="text-nowrap" scope="row">
+                        <span><em style="color: red"> * </em>更新包名称：</span>
+                    </th>
+                    <td colspan="6">
+                        <input type="text" name="name" value="">
+                    </td>
+                </tr>
 
-            <tr name="onerepository">
-                <th class="text-nowrap" scope="row">
-                    <span>代码仓库：</span>
-                </th>
-                <td colspan="1">
-                    <input type="text" name="repository" value="">
-                </td>
-                <td colspan="1">
-                    <span>分支：</span>
-                </td>
-                <td colspan="1">
-                    <input type="text" name="branch" value="">
-                </td>
-                <td colspan="1">
-                    <span>tag名称：</span>
-                </td>
-                <td colspan="1">
-                    <input type="text" name="tag" value="">
-                </td>
-                <td colspan="1">
-                    <button type="button" class="btn btn-primary" name="addrepository">添加仓库</button>
-                </td>
-            </tr>
+                <tr name="onerepository">
+                    <th class="text-nowrap" scope="row">
+                        <span>代码仓库：</span>
+                    </th>
+                    <td colspan="1">
+                        <input type="text" name="repository" value="">
+                    </td>
+                    <td colspan="1">
+                        <span>分支：</span>
+                    </td>
+                    <td colspan="1">
+                        <input type="text" name="branch" value="">
+                    </td>
+                    <td colspan="1">
+                        <span>tag名称：</span>
+                    </td>
+                    <td colspan="1">
+                        <input type="text" name="tag" value="">
+                    </td>
+                    <td colspan="1">
+                        <button type="button" class="btn btn-primary" name="addrepository">添加仓库</button>
+                    </td>
 
-            <tr>
-                <th class="text-nowrap" scope="row">
-                    <span>开发员：</span>
-                </th>
-                <td colspan="6">
-                    <input type="text" name="developer" value="">
-                </td>
-            </tr>
+                </tr>
 
-            <tr>
-                <th class="text-nowrap" scope="row">
-                    <span>测试员：</span>
-                </th>
-                <td colspan="6">
-                    <input type="text" name="tester" value="">
-                </td>
-            </tr>
+                <tr>
+                    <th class="text-nowrap" scope="row">
+                        <span>开发员：</span>
+                    </th>
+                    <td colspan="6">
+                        <input type="text" name="developer" value="">
+                    </td>
+                </tr>
 
-            <tr>
-                <th class="text-nowrap" scope="row">
-                    <span>所属项目：</span>
-                </th>
-                <td colspan="6">
-                    <input type="text" name="system" value="">
-                </td>
-            </tr>
+                <tr>
+                    <th class="text-nowrap" scope="row">
+                        <span>测试员：</span>
+                    </th>
+                    <td colspan="6">
+                        <input type="text" name="tester" value="">
+                    </td>
+                </tr>
 
-            <tr>
-                <th class="text-nowrap" scope="row">
-                    <span>是否申请发版：</span>
-                </th>
-                <td colspan="6">
-                <input type="radio" checked name="is_publish" value="0">否
-                <input type="radio"  name="is_publish" value="1">是
-                </td>
-            </tr>
+                <tr>
+                    <th class="text-nowrap" scope="row">
+                        <span>所属项目：</span>
+                    </th>
+                    <td colspan="6">
+                        <input type="text" name="system" value="">
+                    </td>
+                </tr>
 
-            <tr>
-                <th class="text-nowrap" scope="row">
-                    <span>测试须知：</span>
-                </th>
-                <td colspan="6">
-                    <textarea name="notice_tester" cols="100" rows="10"></textarea>
-                </td>
-            </tr>
+                <tr>
+                    <th class="text-nowrap" scope="row">
+                        <span>是否申请发版：</span>
+                    </th>
+                    <td colspan="6">
+                        <input type="radio" checked name="is_publish" value="0">否
+                        <input type="radio" name="is_publish" value="1">是
+                    </td>
+                </tr>
 
-            <tr>
-                <th class="text-nowrap" scope="row">
-                    <span>运维须知：</span>
-                </th>
-                <td colspan="6">
-                    <textarea name="notice_operator" cols="100" rows="10"></textarea>
-                </td>
-            </tr>
+                <tr>
+                    <th class="text-nowrap" scope="row">
+                        <span>测试须知：</span>
+                    </th>
+                    <td colspan="6">
+                        <textarea name="notice_tester" cols="100" rows="10"></textarea>
+                    </td>
+                </tr>
 
-            <tr>
-                <th class="text-nowrap" scope="row">
-                    <span>需要执行的sql：</span>
-                </th>
-                <td colspan="6">
-                    <input type="text" name="sql" value="">
-                </td>
-            </tr>
+                <tr>
+                    <th class="text-nowrap" scope="row">
+                        <span>运维须知：</span>
+                    </th>
+                    <td colspan="6">
+                        <textarea name="notice_operator" cols="100" rows="10"></textarea>
+                    </td>
+                </tr>
 
-            <tr>
-                <th class="text-nowrap" scope="row">
-                    <span>操作：</span>
-                </th>
-                <td colspan="6">
-                    <input type="submit" value="提交">
-                </td>
-            </tr>
+                <tr>
+                    <th class="text-nowrap" scope="row">
+                        <span>需要执行的sql：</span>
+                    </th>
+                    <td colspan="6">
+                        <input type="text" name="sql" value="">
+                    </td>
+                </tr>
 
-            </tbody>
-        </table>
-    </div>
-</form>
+                <tr>
+                    <th class="text-nowrap" scope="row">
+                        <span>操作：</span>
+                    </th>
+                    <td colspan="6">
+                        <input type="submit" value="提交">
+                    </td>
+                </tr>
 
-<script src="../static/jquery-3.3.1.js"></script>
-<script src="../static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-<script>
-    $("button[name='addrepository']").click(function(){
-        var addrepository_ele='<tr><th class="text-nowrap" scope="row"><span>代码仓库：</span></th><td colspan="1"><input type="text" name="repository" value=""></td><td colspan="1"><span>分支：</span></td><td colspan="1"><input type="text" name="branch" value=""></td><td colspan="1"><span>tag名称：</span></td><td colspan="1"><input type="text" name="tag" value=""></td><td colspan="1"><button type="button" class="btn btn-primary" name="removerepository">删除</button></td></tr>';
-        $("tr[name='onerepository']").after(addrepository_ele);
-    });
+                </tbody>
+            </table>
+        </div>
+    </form>
 
-    $("tbody").on("click","button[name='removerepository']",function(){
-        $(this).parent().parent().remove();
-     });
+    <script src="/static/jquery-3.3.1.js"></script>
+    <script src="/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script>
+        $("button[name='addrepository']").click(function () {
+            var addrepository_Elements = '<tr><th class="text-nowrap" scope="row"><span>代码仓库：</span></th><td colspan="1"><input type="text" name="repository" value=""></td><td colspan="1"><span>分支：</span></td><td colspan="1"><input type="text" name="branch" value=""></td><td colspan="1"><span>tag名称：</span></td><td colspan="1"><input type="text" name="tag" value=""></td><td colspan="1"><button type="button" class="btn btn-primary" name="removerepository">删除</button></td></tr>';
+            $("tr[name='onerepository']").after(addrepository_Elements);
+        });
+
+        $("tbody").on("click", "button[name='removerepository']", function () {
+            $(this).parent().parent().remove();
+        });
 
 
-</script>
+    </script>
 
 {% endblock %}

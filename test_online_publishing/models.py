@@ -18,6 +18,9 @@ class TaskList(models.Model):
     createtime = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
     updatetime = models.DateTimeField(auto_now=True, verbose_name='更新时间')
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         db_table = 'task'
         verbose_name_plural = '更新包列表'
@@ -28,6 +31,9 @@ class Repository(models.Model):
     name = models.CharField(max_length=256, null=False, verbose_name='代码仓库')
     branch = models.CharField(max_length=256, null=True, default='develop', verbose_name='分支')
     tag = models.CharField(max_length=256, null=True, verbose_name='分支tag')
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         db_table = 'repository'
@@ -42,6 +48,9 @@ class Log(models.Model):
     operate_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
     detail = models.TextField(null=True, verbose_name='操作详情')
 
+    def __str__(self):
+        return self.task
+
     class Meta:
         db_table = 'log'
         verbose_name_plural = '操作日志'
@@ -51,6 +60,9 @@ class OperateType(models.Model):
     id = models.AutoField(primary_key=True, auto_created=True)
     name = models.CharField(max_length=64, null=False, verbose_name='操作类型')
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         db_table = 'operate_type'
         verbose_name_plural = '操作类型'
@@ -59,6 +71,9 @@ class OperateType(models.Model):
 class Envir(models.Model):
     id = models.AutoField(primary_key=True, auto_created=True)
     name = models.CharField(max_length=64, null=False, verbose_name='操作类型')
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         db_table = 'envir'
