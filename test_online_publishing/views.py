@@ -27,7 +27,8 @@ class Login(APIView):
             msg = '账号不能为空！'
         elif username != request.user.first_name + request.user.first_name:
             msg = '账号不存在！'
-        elif username == request.user.first_name + request.user.first_name and not request.user.check_password(password):
+        elif username == request.user.first_name + request.user.first_name and not request.user.check_password(
+                password):
             msg = '密码错误！'
         else:
             msg = '未知错误，请联系管理员！'
@@ -39,6 +40,7 @@ class Logout(APIView):
     def get(self, request):
         auth.logout(request)
         return redirect('/publish/login/')
+
 
 class PasswordChange(APIView):
     def get(self, request):
@@ -54,7 +56,7 @@ class PasswordChange(APIView):
         if not new_password == confirm_password:
             msg = '两次密码'
             return render(request, 'password_change.html', {
-                "msg":msg,
+                "msg": msg,
             })
 
         if request.user.check_password(old_password):
@@ -62,7 +64,7 @@ class PasswordChange(APIView):
         else:
             msg = '原密码不正确'
             return render(request, 'password_change.html', {
-                "msg":msg,
+                "msg": msg,
             })
 
 
@@ -105,7 +107,7 @@ class TaskList(APIView):
         # 返回搜索结果的任务列表不用分页了
         # try:
         # if request.GET.get('page'):
-        #         page = int(request.GET.get('page'))
+        # page = int(request.GET.get('page'))
         #         if page < 1:
         #             page = 1
         #     else:
@@ -134,11 +136,11 @@ class AddTask(APIView):
         # print(request.POST)
 
         name = request.POST.get('name')
-        repository = request.POST.get('repository')
-        # repositorys = request.POST.getlist('repository')
-        branch = request.POST.get('branch')
-        # branchs = request.POST.getlist('branch')
-        tag = request.POST.get('tag')
+        # repository = request.POST.get('repository')
+        repositorys = request.POST.getlist('repository')
+        # branch = request.POST.get('branch')
+        branchs = request.POST.getlist('branch')
+        # tag = request.POST.get('tag')
         # tags = request.POST.getlist('tag')
         developer = request.POST.get('developer')
         tester = request.POST.get('tester')
@@ -148,11 +150,15 @@ class AddTask(APIView):
         notice_operator = request.POST.get('notice_operator')
         sql = request.POST.get('sql')
 
-        repository_obj = models.Repository.objects.create(
-            name=repository,
-            branch=branch,
-            tag=tag,
-        )
+        repositorys_obj = []
+        for i in range(len(repositorys)):
+            repository_obj = models.Repository.objects.create(
+                name=repositorys[i],
+                branch=branchs[i],
+                # tag=tags,
+            )
+            repositorys_obj.append(repository_obj)
+
 
         envir_obj = models.Envir.objects.get(id=1)
 
@@ -167,10 +173,10 @@ class AddTask(APIView):
             notice_tester=notice_tester,
             notice_operator=notice_operator,
             sql=sql,
-            creator=1,
+            creator=request.user.id,
         )
 
-        task_obj.repositorys.add(repository_obj)
+        task_obj.repositorys.add(*repositorys_obj)
 
         return redirect('/publish/tasklist')
 
@@ -193,9 +199,12 @@ class EditTask(APIView):
     def post(self, request):
         task_id = request.GET.get("id")
         name = request.POST.get('name')
-        repository = request.POST.get('repository')
-        branch = request.POST.get('branch')
-        tag = request.POST.get('tag')
+        # repository = request.POST.get('repository')
+        repositorys = request.POST.getlist('repository')
+        # branch = request.POST.get('branch')
+        branchs = request.POST.getlist('branch')
+        # tag = request.POST.get('tag')
+        # tags = request.POST.getlist('tag')
         developer = request.POST.get('developer')
         tester = request.POST.get('tester')
         system = request.POST.get('system')
@@ -204,12 +213,14 @@ class EditTask(APIView):
         notice_operator = request.POST.get('notice_operator')
         sql = request.POST.get('sql')
 
-        repository_obj = models.Repository.objects.create(
-            name=repository,
-            branch=branch,
-            tag=tag,
-        )
-        # print(models.Repository.objects.filter(id=repository_obj.id))
+        repositorys_obj = []
+        for i in range(len(repositorys)):
+            repository_obj = models.Repository.objects.create(
+                name=repositorys[i],
+                branch=branchs[i],
+                # tag=tags,
+            )
+            repositorys_obj.append(repository_obj)
 
         task_obj = models.TaskList.objects.filter(id=task_id)[0]
         task_obj.name = name
@@ -222,24 +233,26 @@ class EditTask(APIView):
         task_obj.notice_tester = notice_tester
         task_obj.notice_operator = notice_operator
         task_obj.sql = sql
-        task_obj.creator = 1
+        task_obj.creator = request.user.id
         task_obj.save()
 
-        task_obj.repositorys.set(models.Repository.objects.filter(id=repository_obj.id))
+        task_obj.repositorys.set(repositorys_obj)
 
         return redirect('/publish/tasklist')
 
 
-class AddLog(APIView):
+class Operate(APIView):
     def get(self, request):
         pass
 
     def post(self, request):
         task_id = request.POST.get("task_id")
         operate_tpye_id = request.POST.get('operate_tpye_id')
+        task_obj = models.TaskList.objects.filter(id=task_id)[0]
 
+        # 更新到本地环境
+        update_detail = []
         if operate_tpye_id == "5":
-            update_detail = []
             exec_result = os.popen(r"cd D:/git/mywork/test").read()
             os.popen("d:")
             # update_detail = update_detail + r"cd D:/git/mywork/test" + '\n' + str(exec_result) + '\n'
@@ -262,14 +275,58 @@ class AddLog(APIView):
             update_detail.append("执行结果：    " + str(exec_result))
             # print(update_detail)
 
-            log_obj = models.Log.objects.create(
+            models.Log.objects.create(
                 task=models.TaskList.objects.filter(id=task_id)[0],
                 operator=1,
                 operate_type=models.OperateType.objects.filter(id=operate_tpye_id)[0],
                 detail=update_detail
             )
+            return HttpResponse("本地环境更新成功")
 
-        return HttpResponse("更新成功")
+        # 更新到开发环境
+        elif operate_tpye_id == "10":
+            return HttpResponse("开发环境更新成功")
+
+        # 更新到测试环境
+        elif operate_tpye_id == "15":
+            return HttpResponse("测试环境更新成功")
+
+        # 更新到预生产环境
+        elif operate_tpye_id == "20":
+            return HttpResponse("预生产环境更新成功")
+
+        # 更新到生产环境
+        elif operate_tpye_id == "25":
+            return HttpResponse("生产环境更新成功")
+
+
+        # 申请发版
+        elif operate_tpye_id == "100":
+            print(task_obj)
+            task_obj.is_publish = 1
+            task_obj.save()
+            update_detail = '申请发版'
+            models.Log.objects.create(
+                task=models.TaskList.objects.filter(id=task_id)[0],
+                operator=request.user.id,
+                operate_type=models.OperateType.objects.filter(id=operate_tpye_id)[0],
+                detail=update_detail
+            )
+            return HttpResponse("申请发版成功")
+
+        elif operate_tpye_id == "101":
+            task_obj.is_publish = 0
+            update_detail = '撤销申请发版'
+            models.Log.objects.create(
+                task=models.TaskList.objects.filter(id=task_id)[0],
+                operator=request.user.id,
+                operate_type=models.OperateType.objects.filter(id=operate_tpye_id)[0],
+                detail=update_detail
+            )
+            return HttpResponse("撤销申请发版成功")
+
+        else:
+            return HttpResponse("操作失败，请联系管理员")
 
 
 class GetLogDetail(APIView):

@@ -8,10 +8,10 @@
         {% endblock %}
 
     </title>
-    <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/fontawesome/css/font-awesome.min.css"/>
-    <link rel="stylesheet" href="/static/sweetalert/sweetalert.css"/>
-    <link rel="stylesheet" href="/static/css/password_change.css"/>
+
+
+    {% block page-css %}
+    {% endblock %}
 </head>
 <body>
 
@@ -19,14 +19,10 @@
     {% include 'nav_tabs.html' %}
 
     {% block page-main %}
-    
-    {% endblock %}
-    
-    {% block page-css %}
     {% endblock %}
 
     {% block page-js %}
-    
     {% endblock %}
+
 </body>
 </html>

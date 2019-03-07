@@ -1,0 +1,21 @@
+h2 {
+    margin-left: 10px;
+}
+
+.table-responsive {
+    width: 70%;
+    margin-left: 10px;
+}
+
+th {
+    text-align: right;
+}
+
+#branch {
+    text-align: right;
+}
+
+em {
+    color:red;
+}
+

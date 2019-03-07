@@ -6,9 +6,23 @@
     新建更新包_xGo在线发布系统
 {% endblock %}
 
+
+{% block page-css %}
+    <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/fontawesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/sweetalert/sweetalert.css">
+    <link rel="stylesheet" href="/static/css/addtask.css">
+{% endblock %}
+
+
 {% block page-main %}
 
-    <h1>新建更新包</h1>
+    <ol class="breadcrumb">
+        <li><a href="/publish/tasklist/">更新包列表</a></li>
+        <li><a href="#">新建更新包</a></li>
+    </ol>
+
+    <h2>新建更新包</h2>
     {#<img src="{% static "fengjing1.jpg" %}" alt="">#}
     <form action="addtask" method="post">
         {% csrf_token %}
@@ -19,32 +33,32 @@
 
                 <tr>
                     <th class="text-nowrap" scope="row">
-                        <span><em style="color: red"> * </em>更新包名称：</span>
+                        <span style="text-align: right"><em> * </em>更新包名称：</span>
                     </th>
                     <td colspan="6">
-                        <input type="text" name="name" value="">
+                        <input class="col-md-6" type="text" name="name" value="" required="">
                     </td>
                 </tr>
 
                 <tr name="onerepository">
                     <th class="text-nowrap" scope="row">
-                        <span>代码仓库：</span>
+                        <span><em> * </em>代码仓库：</span>
                     </th>
                     <td colspan="1">
-                        <input type="text" name="repository" value="">
+                        <input type="text" name="repository" value="" required="">
+                    </td>
+                    <td colspan="1" id="branch">
+                        <span><em> * </em>分支：</span>
                     </td>
                     <td colspan="1">
-                        <span>分支：</span>
+                        <input type="text" name="branch" value="" required="">
                     </td>
-                    <td colspan="1">
-                        <input type="text" name="branch" value="">
-                    </td>
-                    <td colspan="1">
-                        <span>tag名称：</span>
-                    </td>
-                    <td colspan="1">
-                        <input type="text" name="tag" value="">
-                    </td>
+                    {#                    <td colspan="1">#}
+                    {#                        <span>tag名称：</span>#}
+                    {#                    </td>#}
+                    {#                    <td colspan="1">#}
+                    {#                        <input type="text" name="tag" value="">#}
+                    {#                    </td>#}
                     <td colspan="1">
                         <button type="button" class="btn btn-primary" name="addrepository">添加仓库</button>
                     </td>
@@ -78,15 +92,15 @@
                     </td>
                 </tr>
 
-                <tr>
-                    <th class="text-nowrap" scope="row">
-                        <span>是否申请发版：</span>
-                    </th>
-                    <td colspan="6">
-                        <input type="radio" checked name="is_publish" value="0">否
-                        <input type="radio" name="is_publish" value="1">是
-                    </td>
-                </tr>
+                {#                <tr>#}
+                {#                    <th class="text-nowrap" scope="row">#}
+                {#                        <span>是否申请发版：</span>#}
+                {#                    </th>#}
+                {#                    <td colspan="6">#}
+                {#                        <input type="radio" checked name="is_publish" value="0">否#}
+                {#                        <input type="radio" name="is_publish" value="1">是#}
+                {#                    </td>#}
+                {#                </tr>#}
 
                 <tr>
                     <th class="text-nowrap" scope="row">
@@ -111,7 +125,7 @@
                         <span>需要执行的sql：</span>
                     </th>
                     <td colspan="6">
-                        <input type="text" name="sql" value="">
+                        <textarea name="sql" cols="100" rows="10"></textarea>
                     </td>
                 </tr>
 
@@ -127,13 +141,18 @@
                 </tbody>
             </table>
         </div>
+
     </form>
 
     <script src="/static/jquery-3.3.1.js"></script>
     <script src="/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
     <script>
         $("button[name='addrepository']").click(function () {
-            var addrepository_Elements = '<tr><th class="text-nowrap" scope="row"><span>代码仓库：</span></th><td colspan="1"><input type="text" name="repository" value=""></td><td colspan="1"><span>分支：</span></td><td colspan="1"><input type="text" name="branch" value=""></td><td colspan="1"><span>tag名称：</span></td><td colspan="1"><input type="text" name="tag" value=""></td><td colspan="1"><button type="button" class="btn btn-primary" name="removerepository">删除</button></td></tr>';
+            var addrepository_Elements = '<tr><th class="text-nowrap" scope="row"><span><em> * </em>代码仓库：</span>' +
+                    '</th><td colspan="1"><input type="text" name="repository" value="" required=""></td>' +
+                    '<td colspan="1"  id="branch"><span><em> * </em>分支：</span></td>' +
+                    '<td colspan="1"><input type="text" name="branch" value="" required=""></td>' +
+                    '<td colspan="1"><button type="button" class="btn btn-primary" name="removerepository">删除</button></td></tr>';
             $("tr[name='onerepository']").after(addrepository_Elements);
         });
 

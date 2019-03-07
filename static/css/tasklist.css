@@ -1,0 +1,17 @@
+h2 {
+    margin-left: 10px;
+}
+
+.search {
+    margin-left: 10px;
+}
+
+.context {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+td#publish_yes {
+    color: red;
+    /*font-weight:bold;*/
+}

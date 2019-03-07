@@ -1,0 +1,44 @@
+h2 {
+    margin-left: 10px;
+}
+
+.table-responsive {
+    width: 70%;
+    margin-left: 10px;
+}
+
+th {
+    text-align: right;
+}
+
+#branch {
+    text-align: right;
+}
+
+em {
+    color:red;
+}
+
+p#publish_yes {
+    color: red;
+    /*font-weight:bold;*/
+}
+
+
+#content-related {
+    background: #ccc;
+    /*float: right;*/
+    width: 250px;
+    position: relative;
+    padding: 0;
+}
+
+#operations {
+
+}
+
+.actionlist
+    {
+    background: #dff0d8;
+    line-height: 40px
+    }

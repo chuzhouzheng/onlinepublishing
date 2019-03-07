@@ -6,147 +6,190 @@
     编辑更新包_xGo在线发布系统
 {% endblock %}
 
+{% block page-css %}
+    <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/fontawesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/sweetalert/sweetalert.css">
+    <link rel="stylesheet" href="/static/css/edittask.css"/>
+{% endblock %}
+
 {% block page-main %}
 
-    <h1>{{ task.name }}</h1>
+    <ol class="breadcrumb">
+        <li><a href="/publish/addtask/">更新包列表</a></li>
+        <li><a href="#">编辑更新包</a></li>
+    </ol>
+
+    <h2>{{ task.name }}</h2>
 
     <form action="edittask?id={{ task.id }}" method="post">
         {% csrf_token %}
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped" border="1">
-                <tbody>
+        <div class="row">
+            <div class="table-responsive  col-md-8">
+                <table class="table table-bordered table-striped" border="1">
+                    <tbody>
 
-                <tr>
-                    <th class="text-nowrap row" scope="row">
-                        <span><em style="color: red"> * </em>更新包名称：</span>
-                    </th>
-                    <td colspan="6">
-                        <input class="col-md-6" type="text" name="name" value="{{ task.name }}">
-                    </td>
-                </tr>
-
-                {% for repository in repositorys %}
-                    <tr name="onerepository">
-                        <th class="text-nowrap" scope="row">
-                            <span>代码仓库：</span>
+                    <tr>
+                        <th class="text-nowrap row" scope="row">
+                            <span><em> * </em>更新包名称：</span>
                         </th>
-                        <td colspan="1">
-                            <input type="text" name="repository" value="{{ repository.name }}">
+                        <td colspan="6">
+                            <input class="col-md-6" type="text" name="name" value="{{ task.name }}">
                         </td>
-                        <td colspan="1">
-                            <span>分支：</span>
-                        </td>
-                        <td colspan="1">
-                            <input type="text" name="branch" value="{{ repository.branch }}">
-                        </td>
-                        <td colspan="1">
-                            <span>tag名称：</span>
-                        </td>
-                        <td colspan="1">
-                            <input type="text" name="tag" value="{{ repository.tag }}">
-                        </td>
-
-                        {% if forloop.first %}
-                            <td colspan="1">
-                                <button type="button" class="btn btn-primary" name="addrepository">添加仓库</button>
-                            </td>
-                        {% else %}
-                            <td colspan="1">
-                                <button type="button" class="btn btn-primary" name="removerepository">删除</button>
-                            </td>
-                        {% endif %}
-
                     </tr>
-                {% endfor %}
 
-                <tr>
-                    <th class="text-nowrap" scope="row">
-                        <span>开发员：</span>
-                    </th>
-                    <td colspan="6">
-                        <input type="text" name="developer" value="{{ task.developer }}">
-                    </td>
-                </tr>
+                    {% for repository in repositorys %}
+                        <tr name="onerepository">
+                            <th class="text-nowrap" scope="row">
+                                <span><em> * </em>代码仓库：</span>
+                            </th>
+                            <td colspan="1">
+                                <input type="text" name="repository" value="{{ repository.name }}" required="">
+                            </td>
+                            <td colspan="1" id="branch">
+                                <span><em> * </em>分支：</span>
+                            </td>
+                            <td colspan="1">
+                                <input type="text" name="branch" value="{{ repository.branch }}" required="">
+                            </td>
+                            {#                        <td colspan="1">#}
+                            {#                            <span>tag名称：</span>#}
+                            {#                        </td>#}
+                            {#                        <td colspan="1">#}
+                            {#                            <input type="text" name="tag" value="{{ repository.tag }}">#}
+                            {#                        </td>#}
 
-                <tr>
-                    <th class="text-nowrap" scope="row">
-                        <span>测试员：</span>
-                    </th>
-                    <td colspan="6">
-                        <input type="text" name="tester" value="{{ task.tester }}">
-                    </td>
-                </tr>
+                            {% if forloop.first %}
+                                <td colspan="1">
+                                    <button type="button" class="btn btn-primary" name="addrepository">添加仓库</button>
+                                </td>
+                            {% else %}
+                                <td colspan="1">
+                                    <button type="button" class="btn btn-primary" name="removerepository">删除</button>
+                                </td>
+                            {% endif %}
 
-                <tr>
-                    <th class="text-nowrap" scope="row">
-                        <span>所属项目：</span>
-                    </th>
-                    <td colspan="6">
-                        <input type="text" name="system" value="{{ task.system }}">
-                    </td>
-                </tr>
+                        </tr>
+                    {% endfor %}
 
-                <tr>
-                    <th class="text-nowrap" scope="row">
-                        <span>是否申请发版：</span>
-                    </th>
-                    <td colspan="6">
-                        {% if task.is_publish == 1 %}
-                            <input type="radio" name="is_publish" value="0">否
-                            <input type="radio" checked name="is_publish" value="1">是
-                        {% else %}
-                            <input type="radio" checked name="is_publish" value="0">否
-                            <input type="radio" name="is_publish" value="1">是
-                        {% endif %}
-                    </td>
-                </tr>
+                    <tr>
+                        <th class="text-nowrap" scope="row">
+                            <span>开发员：</span>
+                        </th>
+                        <td colspan="6">
+                            <input type="text" name="developer" value="{{ task.developer }}">
+                        </td>
+                    </tr>
 
-                <tr>
-                    <th class="text-nowrap" scope="row">
-                        <span>测试须知：</span>
-                    </th>
-                    <td colspan="6">
-                        <textarea name="notice_tester" cols="100" rows="10">{{ task.notice_tester }}</textarea>
-                    </td>
-                </tr>
+                    <tr>
+                        <th class="text-nowrap" scope="row">
+                            <span>测试员：</span>
+                        </th>
+                        <td colspan="6">
+                            <input type="text" name="tester" value="{{ task.tester }}">
+                        </td>
+                    </tr>
 
-                <tr>
-                    <th class="text-nowrap" scope="row">
-                        <span>运维须知：</span>
-                    </th>
-                    <td colspan="6">
-                        <textarea name="notice_operator" cols="100" rows="10">{{ task.notice_operator }}</textarea>
-                    </td>
-                </tr>
+                    <tr>
+                        <th class="text-nowrap" scope="row">
+                            <span>所属项目：</span>
+                        </th>
+                        <td colspan="6">
+                            <input type="text" name="system" value="{{ task.system }}">
+                        </td>
+                    </tr>
 
-                <tr>
-                    <th class="text-nowrap" scope="row">
-                        <span>需要执行的sql：</span>
-                    </th>
-                    <td colspan="6">
-                        <input type="text" name="sql" value="{{ task.sql }}">
-                    </td>
-                </tr>
+                    <tr>
+                        <th class="text-nowrap" scope="row">
+                            <span>是否申请发版：</span>
+                        </th>
+                        <td colspan="6">
+                            {% if task.is_publish == 1 %}
+                                <p id="publish_yes">是</p>
+                            {% else %}
+                                <p id="publish_no">否</p>
+                            {% endif %}
+                        </td>
+                    </tr>
 
-                <tr>
-                    <th class="text-nowrap" scope="row">
-                        <span>操作：</span>
-                    </th>
-                    <td colspan="6">
-                        <input type="submit" value="提交">
-                    </td>
-                </tr>
+                    <tr>
+                        <th class="text-nowrap" scope="row">
+                            <span>测试须知：</span>
+                        </th>
+                        <td colspan="6">
+                            <textarea name="notice_tester" cols="100" rows="10">{{ task.notice_tester }}</textarea>
+                        </td>
+                    </tr>
 
-                </tbody>
-            </table>
+                    <tr>
+                        <th class="text-nowrap" scope="row">
+                            <span>运维须知：</span>
+                        </th>
+                        <td colspan="6">
+                            <textarea name="notice_operator" cols="100" rows="10">{{ task.notice_operator }}</textarea>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="text-nowrap" scope="row">
+                            <span>需要执行的sql：</span>
+                        </th>
+                        <td colspan="6">
+                            <textarea name="sql" cols="100" rows="10">{{ task.sql }}</textarea>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="text-nowrap" scope="row">
+                            <span>操作：</span>
+                        </th>
+                        <td colspan="6">
+                            <input type="submit" value="提交">
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-4" id="content-related">
+                <div class="module" id="recent-actions-module">
+                    <h2 id="operations">操作</h2>
+                    <ul class="actionlist">
+
+                        <li class="changelink">
+                            <a href="#" id="updatelocalenv">更新到本地环境</a>
+                        </li>
+
+                        <li class="changelink">
+                            <a href="/publish/updatedevelopenv/" id="updatedevelopenv">更新到开发环境</a>
+                        </li>
+
+                        <li class="changelink">
+                            <a href="/publish/updatetestenv/" id="updatetestenv">更新到测试环境</a>
+                        </li>
+
+                        <li class="changelink">
+                            <a href="/publish/updatepreproductenv/" id="updatepreproductenv">更新到预生产环境</a>
+                        </li>
+
+                        <li class="addlink">
+                            <a href="/publish/updateproductenv/" id="updateproductenv">更新到生产环境</a>
+                        </li>
+
+                        <li class="addlink">
+                            <a href="#" id="ispublish">申请发版</a>
+                        </li>
+
+                        <li class="addlink">
+                            <a href="/publish/nopublish/" id="nopublish">撤销申请发版</a>
+                        </li>
+
+                    </ul>
+
+                </div>
+            </div>
         </div>
-
     </form>
-
-
-    <button type="button" class="btn btn-primary" name="updatelocal">更新到本地环境</button>
-    <button type="button" class="btn btn-primary" name="updatedev">更新到dev环境</button>
-    <button type="button" class="btn btn-primary" name="updatedev2">更新到dev2环境</button>
 
 
     <h3>操作日志</h3>
@@ -198,7 +241,10 @@
     <script src="/static/sweetalert/sweetalert.min.js"></script>
     <script>
         $("button[name='addrepository']").click(function () {
-            var addrepository_Elements = '<tr><th class="text-nowrap" scope="row"><span>代码仓库：</span></th><td colspan="1"><input type="text" name="repository" value="{{ task.repository_id.name }}"></td><td colspan="1"><span>分支：</span></td><td colspan="1"><input type="text" name="branch" value="{{ task.repository_id.branch }}"></td><td colspan="1"><span>tag名称：</span></td><td colspan="1"><input type="text" name="tag" value="{{ task.repository_id.tag }}"></td><td colspan="1"><button type="button" class="btn btn-primary" name="removerepository">删除</button></td></tr>';
+            var addrepository_Elements = '<tr><th class="text-nowrap" scope="row"><span><em> * </em>代码仓库：</span></th>' +
+                    '<td colspan="1"><input type="text" name="repository" value="{{ task.repository_id.name }}" required=""></td>' +
+                    '<td colspan="1" id="branch"><span><em> * </em>分支：</span></td><td colspan="1"><input type="text" name="branch" value="{{ task.repository_id.branch }}" required=""></td>' +
+                    '<td colspan="1"><button type="button" class="btn btn-primary" name="removerepository">删除</button></td></tr>';
             $("tr[name='onerepository']").after(addrepository_Elements);
         });
 
@@ -208,9 +254,11 @@
             $(this).parent().parent().remove();
         });
 
-        $("button[name='updatelocal']").click(function () {
+
+        {#    更新操作#}
+        $("#updatelocalenv").click(function () {
             $.ajax({
-                url: 'addlog',
+                url: 'operate',
                 type: 'POST',
                 data: {task_id:{{ task.id }},
                     operate_tpye_id: "5",
@@ -222,9 +270,9 @@
             });
         });
 
-        $("button[name='updatelodev']").click(function () {
+        $("#updatedevelopenv").click(function () {
             $.ajax({
-                url: 'addlog',
+                url: 'operate',
                 type: 'POST',
                 data: {task_id:{{ task.id }},
                     operate_tpye_id: "10",
@@ -236,9 +284,9 @@
             });
         });
 
-        $("button[name='updatelodev2']").click(function () {
+        $("#updatetestenv").click(function () {
             $.ajax({
-                url: 'addlog',
+                url: 'operate',
                 type: 'POST',
                 data: {task_id:{{ task.id }},
                     operate_tpye_id: "15",
@@ -250,6 +298,66 @@
             });
         });
 
+        $("#updatepreproductenv").click(function () {
+            $.ajax({
+                url: 'operate',
+                type: 'POST',
+                data: {task_id:{{ task.id }},
+                    operate_tpye_id: "20",
+                    "csrfmiddlewaretoken": $("[name = 'csrfmiddlewaretoken']").val()
+                },
+                success: function (data) {
+                    alert(data)
+                }
+            });
+        });
+
+        $("#updatepproductenv").click(function () {
+            $.ajax({
+                url: 'operate',
+                type: 'POST',
+                data: {task_id:{{ task.id }},
+                    operate_tpye_id: "25",
+                    "csrfmiddlewaretoken": $("[name = 'csrfmiddlewaretoken']").val()
+                },
+                success: function (data) {
+                    alert(data)
+                }
+            });
+        });
+
+
+        {#        发版操作#}
+        $("#ispublish").click(function () {
+            $.ajax({
+                url: 'operate',
+                type: 'POST',
+                data: {task_id:{{ task.id }},
+                    operate_tpye_id: "100",
+                    "csrfmiddlewaretoken": $("[name = 'csrfmiddlewaretoken']").val()
+                },
+                success: function (data) {
+                    alert(data)
+                }
+            });
+        });
+
+        $("#nopublish").click(function () {
+            $.ajax({
+                url: 'operate',
+                type: 'POST',
+                data: {task_id:{{ task.id }},
+                    operate_tpye_id: "101",
+                    "csrfmiddlewaretoken": $("[name = 'csrfmiddlewaretoken']").val()
+                },
+                success: function (data) {
+                    alert(data)
+                }
+            });
+        });
+
+
+        {#      查询操作日志#}
         $("a[name='getlogdetail']").on("click", function () {
             var $trElement = $(this).parent().parent().children();
             var id = $trElement.eq(0).text();

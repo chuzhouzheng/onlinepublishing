@@ -6,11 +6,22 @@
     更新包列表_xGo在线发布系统
 {% endblock %}
 
+{% block page-css %}
+    <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/fontawesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/sweetalert/sweetalert.css">
+    <link rel="stylesheet" href="/static/css/tasklist.css"/>
+{% endblock %}
+
 {% block page-main %}
 
-    <h1>更新包列表</h1>
+    <ol class="breadcrumb">
+        <li><a href="#">更新包列表</a></li>
+    </ol>
+
+    <h2>更新包列表</h2>
     <form action="" method="post">
-    {% csrf_token %}
+        {% csrf_token %}
         <div class="search row">
             <div class="col-md-6">
                 <span>更新包名称：
@@ -49,9 +60,9 @@
                         <td>{{ task.name }}</td>
                         <td>{{ task.system }}</td>
                         {% if task.is_publish == 1 %}
-                            <td>是</td>
+                            <td id="publish_yes">是</td>
                         {% else %}
-                            <td>否</td>
+                            <td id="publish_no">否</td>
                         {% endif %}
                         <td>{{ task.tester }}</td>
                         <td>{{ task.creator }}</td>

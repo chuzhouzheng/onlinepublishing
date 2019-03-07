@@ -7,6 +7,6 @@ urlpatterns = [
     url(r'^tasklist', views.TaskList.as_view()),
     url(r'^addtask', views.AddTask.as_view()),
     url(r'^edittask', views.EditTask.as_view()),
-    url(r'^addlog', views.AddLog.as_view()),
+    url(r'^operate', views.Operate.as_view()),
     url(r'^logdetail', views.GetLogDetail.as_view()),
 ]
