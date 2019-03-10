@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/fontawesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="/static/sweetalert/sweetalert.css">
+{#    <link rel="stylesheet" href="/static/element-ui/index.css">#}
     <link rel="stylesheet" href="/static/css/edittask.css"/>
 {% endblock %}
 
@@ -20,7 +21,7 @@
         <li><a href="#">编辑更新包</a></li>
     </ol>
 
-    <h2>{{ task.name }}</h2>
+    <h2 class="task_title">{{ task.name }}</h2>
 
     <form action="edittask?id={{ task.id }}" method="post">
         {% csrf_token %}
@@ -191,49 +192,61 @@
         </div>
     </form>
 
+    <h2 class="logs_title">操作日志</h2>
+    <div class="table-logs context">
 
-    <h3>操作日志</h3>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>时间</th>
-            <th>操作人</th>
-            <th>操作类型</th>
-            <th>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for log in logs %}
+        <table class="table table-striped">
+            <thead>
             <tr>
-                <td>{{ log.id }}</td>
-                <td>{{ log.operate_time|date:"Y-m-d H:i:s" }}</td>
-                <td>{{ log.operator }}</td>
-                {% if log.operate_type_id == 1 %}
-                    <td>提交测试任务</td>
-                {% elif log.operate_type_id == 5 %}
-                    <td>更新到本地环境</td>
-                {% elif log.operate_type_id == 10 %}
-                    <td>更新到dev环境</td>
-                {% elif log.operate_type_id == 15 %}
-                    <td>更新到dev2环境</td>
-                {% elif log.operate_type_id == 20 %}
-                    <td>更新到生产环境</td>
-                {% else %}
-                    <td>未知操作</td>
-                {% endif %}
-
-                <td>
-                    <a name="getlogdetail">详情</a>
-                </td>
-
+                <th>ID</th>
+                <th>时间</th>
+                <th>操作人</th>
+                <th>操作类型</th>
+                <th>操作</th>
             </tr>
-        {% endfor %}
+            </thead>
+            <tbody>
+            {% for log in logs %}
+                <tr>
+                    <td>{{ log.id }}</td>
+                    <td>{{ log.operate_time|date:"Y-m-d H:i:s" }}</td>
+                    <td>{{ log.operator.last_name }}{{ log.operator.first_name }}</td>
+                    {% if log.operate_type_id == 1 %}
+                        <td>新增更新包</td>
+                    {% elif log.operate_type_id == 2 %}
+                        <td>编辑更新包</td>
+                    {% elif log.operate_type_id == 5 %}
+                        <td>更新到本地环境</td>
+                    {% elif log.operate_type_id == 10 %}
+                        <td>更新到开发环境</td>
+                    {% elif log.operate_type_id == 15 %}
+                        <td>更新到测试环境</td>
+                    {% elif log.operate_type_id == 20 %}
+                        <td>更新到预生产环境</td>
+                    {% elif log.operate_type_id == 25 %}
+                        <td>更新到生产环境</td>
+                    {% elif log.operate_type_id == 100 %}
+                        <td>申请发版</td>
+                    {% elif log.operate_type_id == 101 %}
+                        <td>撤销申请发版</td>
+                    {% else %}
+                        <td>未知操作</td>
+                    {% endif %}
 
-        </tbody>
-    </table>
-    <div class="logdetail" style="margin:30px"></div>
-    <div style="width:50%;height:600px;overflow:auto; float:right"></div>
+                    <td>
+                        <a name="getlogdetail">查看</a>
+                    </td>
+
+                </tr>
+{#                <tr class="logdetail" id={{ log.id }}>#}
+{#                    <td colspan="5"></td>#}
+{#                </tr>#}
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
 
 
     <script src="/static/jquery-3.3.1.js"></script>
@@ -242,9 +255,9 @@
     <script>
         $("button[name='addrepository']").click(function () {
             var addrepository_Elements = '<tr><th class="text-nowrap" scope="row"><span><em> * </em>代码仓库：</span></th>' +
-                    '<td colspan="1"><input type="text" name="repository" value="{{ task.repository_id.name }}" required=""></td>' +
-                    '<td colspan="1" id="branch"><span><em> * </em>分支：</span></td><td colspan="1"><input type="text" name="branch" value="{{ task.repository_id.branch }}" required=""></td>' +
-                    '<td colspan="1"><button type="button" class="btn btn-primary" name="removerepository">删除</button></td></tr>';
+                '<td colspan="1"><input type="text" name="repository" value="{{ task.repository_id.name }}" required=""></td>' +
+                '<td colspan="1" id="branch"><span><em> * </em>分支：</span></td><td colspan="1"><input type="text" name="branch" value="{{ task.repository_id.branch }}" required=""></td>' +
+                '<td colspan="1"><button type="button" class="btn btn-primary" name="removerepository">删除</button></td></tr>';
             $("tr[name='onerepository']").after(addrepository_Elements);
         });
 
@@ -260,7 +273,8 @@
             $.ajax({
                 url: 'operate',
                 type: 'POST',
-                data: {task_id:{{ task.id }},
+                data: {
+                    task_id:{{ task.id }},
                     operate_tpye_id: "5",
                     "csrfmiddlewaretoken": $("[name = 'csrfmiddlewaretoken']").val()
                 },
@@ -274,7 +288,8 @@
             $.ajax({
                 url: 'operate',
                 type: 'POST',
-                data: {task_id:{{ task.id }},
+                data: {
+                    task_id:{{ task.id }},
                     operate_tpye_id: "10",
                     "csrfmiddlewaretoken": $("[name = 'csrfmiddlewaretoken']").val()
                 },
@@ -288,7 +303,8 @@
             $.ajax({
                 url: 'operate',
                 type: 'POST',
-                data: {task_id:{{ task.id }},
+                data: {
+                    task_id:{{ task.id }},
                     operate_tpye_id: "15",
                     "csrfmiddlewaretoken": $("[name = 'csrfmiddlewaretoken']").val()
                 },
@@ -302,7 +318,8 @@
             $.ajax({
                 url: 'operate',
                 type: 'POST',
-                data: {task_id:{{ task.id }},
+                data: {
+                    task_id:{{ task.id }},
                     operate_tpye_id: "20",
                     "csrfmiddlewaretoken": $("[name = 'csrfmiddlewaretoken']").val()
                 },
@@ -316,7 +333,8 @@
             $.ajax({
                 url: 'operate',
                 type: 'POST',
-                data: {task_id:{{ task.id }},
+                data: {
+                    task_id:{{ task.id }},
                     operate_tpye_id: "25",
                     "csrfmiddlewaretoken": $("[name = 'csrfmiddlewaretoken']").val()
                 },
@@ -332,7 +350,8 @@
             $.ajax({
                 url: 'operate',
                 type: 'POST',
-                data: {task_id:{{ task.id }},
+                data: {
+                    task_id:{{ task.id }},
                     operate_tpye_id: "100",
                     "csrfmiddlewaretoken": $("[name = 'csrfmiddlewaretoken']").val()
                 },
@@ -346,7 +365,8 @@
             $.ajax({
                 url: 'operate',
                 type: 'POST',
-                data: {task_id:{{ task.id }},
+                data: {
+                    task_id:{{ task.id }},
                     operate_tpye_id: "101",
                     "csrfmiddlewaretoken": $("[name = 'csrfmiddlewaretoken']").val()
                 },
@@ -359,21 +379,26 @@
 
         {#      查询操作日志#}
         $("a[name='getlogdetail']").on("click", function () {
-            var $trElement = $(this).parent().parent().children();
-            var id = $trElement.eq(0).text();
+            var $tdElement = $(this).parent().parent().children();
+            var $trElement = $(this).parent().parent();
+            var id = $tdElement.eq(0).text();
             $.ajax({
                 url: 'logdetail?id=' + id,
                 type: 'get',
                 success: function (data) {
-                    data = data.replace("['", "");
-                    data = data.replace("']", "");
-                    data = data.replace("\\n", "");
+                    {#$trElement.after('<tr><td colspan="5">' + data + '</td></tr>');#}
+
                     data = data.split(",");
                     var log_detail = '';
                     console.log(data.length);
                     for (var i = 0; i < data.length; i++) {
-                        $(".logdetail").append("<div>" + data[i] + "</div>");
+                        data[i] = data[i].replace(/["]/,'');
+                        log_detail =log_detail + '<div>' + data[i] + '</div>';
+                        {#console.log(log_detail);#}
                     }
+                    console.log(log_detail);
+                    $trElement.after('<tr><td colspan="5" style="color:green">' + log_detail + '</td></tr>');
+
 
                 }
             });

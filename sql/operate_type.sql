@@ -1,4 +1,5 @@
-INSERT INTO `operate_type` VALUES (1, '提交测试任务');
+INSERT INTO `operate_type` VALUES (1, '新增更新包');
+INSERT INTO `operate_type` VALUES (2, '编辑更新包');
 INSERT INTO `operate_type` VALUES (5, '更新到本地环境');
 INSERT INTO `operate_type` VALUES (10, '更新到开发环境');
 INSERT INTO `operate_type` VALUES (15, '更新到测试环境');

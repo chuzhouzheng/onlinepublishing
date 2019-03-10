@@ -36,48 +36,41 @@
     </form>
 
     <br>
-    <div class="context">
-
-        <div class="items">
-            <table class="table table-striped">
-                <thead>
+    <div class="tasks context">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>更新包名称</th>
+                <th>所属项目</th>
+                <th>是否申请发版</th>
+                <th>测试员</th>
+                <th>创建人</th>
+                <th>更新时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for task in tasks %}
                 <tr>
-                    <th>ID</th>
-                    <th>更新包名称</th>
-                    <th>所属项目</th>
-                    <th>是否申请发版</th>
-                    <th>测试员</th>
-                    <th>创建人</th>
-                    <th>更新时间</th>
-                    <th>操作</th>
+                    <td>{{ task.id }}</td>
+                    <td>{{ task.name }}</td>
+                    <td>{{ task.system }}</td>
+                    {% if task.is_publish == 1 %}
+                        <td id="publish_yes">是</td>
+                    {% else %}
+                        <td id="publish_no">否</td>
+                    {% endif %}
+                    <td>{{ task.tester }}</td>
+                    <td>{{ task.creator.last_name }}{{ task.creator.first_name }}</td>
+                    <td>{{ task.updatetime|date:"Y-m-d H:i:s" }}</td>
+                    <td>
+                        <a href="/publish/edittask?id={{ task.id }}" target="_blank">编辑</a>
+                    </td>
                 </tr>
-                </thead>
-                <tbody>
-
-                {% for task in tasks %}
-                    <tr>
-                        <td>{{ task.id }}</td>
-                        <td>{{ task.name }}</td>
-                        <td>{{ task.system }}</td>
-                        {% if task.is_publish == 1 %}
-                            <td id="publish_yes">是</td>
-                        {% else %}
-                            <td id="publish_no">否</td>
-                        {% endif %}
-                        <td>{{ task.tester }}</td>
-                        <td>{{ task.creator }}</td>
-                        <td>{{ task.updatetime|date:"Y-m-d H:i:s" }}</td>
-                        <td>
-                            <a href="/publish/edittask?id={{ task.id }}" target="_blank">编辑</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-
-                </tbody>
-            </table>
-
-
-        </div>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
 
     {#分页组件#}

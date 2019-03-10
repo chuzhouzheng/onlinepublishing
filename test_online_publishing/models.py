@@ -1,11 +1,11 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-# Create your models here.
 
 class TaskList(models.Model):
     id = models.AutoField(primary_key=True, auto_created=True)
     name = models.CharField(max_length=256, null=False, help_text='更新包名称', verbose_name='更新包名称')
-    envir = models.ForeignKey(to='Envir', on_delete=True, db_constraint=False, default=1, verbose_name='所在环境（1：无；5：本地环境；10：开发环境；15：测试环境；20：预生产环境；25：生产环境）')
+    envir = models.ForeignKey(to='Envir', on_delete=True, db_constraint=False, default=1, verbose_name='所在环境，对应envir.id')
     repositorys = models.ManyToManyField(to='Repository', db_constraint=False, default=None, verbose_name='代码仓库')
     developer = models.CharField(max_length=256, null=True, verbose_name='开发员')
     tester = models.CharField(max_length=256, null=True, verbose_name='测试员')
@@ -14,7 +14,8 @@ class TaskList(models.Model):
     notice_tester = models.TextField(null=True, verbose_name='测试须知')
     notice_operator = models.TextField(null=True, verbose_name='运维须知')
     sql = models.TextField(null=True, verbose_name='需要执行的sql')
-    creator = models.IntegerField(null=False, verbose_name='创建人')
+    # creator = models.IntegerField(null=False, verbose_name='创建人')
+    creator = models.ForeignKey(to=User, on_delete=True, db_constraint=False, default=None, verbose_name='创建人，auth_user.id')
     createtime = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
     updatetime = models.DateTimeField(auto_now=True, verbose_name='更新时间')
 
@@ -31,6 +32,8 @@ class Repository(models.Model):
     name = models.CharField(max_length=256, null=False, verbose_name='代码仓库')
     branch = models.CharField(max_length=256, null=True, default='develop', verbose_name='分支')
     tag = models.CharField(max_length=256, null=True, verbose_name='分支tag')
+    createtime = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
+    updatetime = models.DateTimeField(auto_now=True, verbose_name='更新时间')
 
     def __str__(self):
         return self.name
@@ -43,8 +46,9 @@ class Repository(models.Model):
 class Log(models.Model):
     id = models.AutoField(primary_key=True, auto_created=True)
     task = models.ForeignKey(to='TaskList', on_delete=True, db_constraint=False, default=None, verbose_name='任务id')
-    operator = models.IntegerField(null=False, verbose_name='操作人')
-    operate_type = models.ForeignKey(to='OperateType', on_delete=True, db_constraint=False, verbose_name='操作类型（1：开发提交任务；5：更新到本地环境；10：更新到开发环境；15：更新到测试环境; 20：更新到预生产环境; 25：更新到生产环境）')
+    # operator = models.IntegerField(null=False, verbose_name='操作人')
+    operator = models.ForeignKey(to=User, on_delete=True, db_constraint=False, default=None, verbose_name='操作人，auth_user.id')
+    operate_type = models.ForeignKey(to='OperateType', on_delete=True, db_constraint=False, verbose_name='操作类型，对应operate_type.id')
     operate_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')
     detail = models.TextField(null=True, verbose_name='操作详情')
 

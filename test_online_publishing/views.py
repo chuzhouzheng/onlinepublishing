@@ -25,7 +25,7 @@ class Login(APIView):
 
         elif username == '':
             msg = '账号不能为空！'
-        elif username != request.user.first_name + request.user.first_name:
+        elif username != request.user.username:
             msg = '账号不存在！'
         elif username == request.user.first_name + request.user.first_name and not request.user.check_password(
                 password):
@@ -54,7 +54,7 @@ class PasswordChange(APIView):
         new_password = request.POST.get('new_password')
         confirm_password = request.POST.get('confirm_password')
         if not new_password == confirm_password:
-            msg = '两次密码'
+            msg = '两次密码不一致'
             return render(request, 'password_change.html', {
                 "msg": msg,
             })
@@ -88,9 +88,10 @@ class TaskList(APIView):
         page_html = page_obj.page_html
 
         return render(request, 'tasklist.html', {
-            "tasks": task_list.values(),
+            "tasks": task_list,
             'page_html': page_html,
-            'user_name': request.user.last_name + request.user.first_name,
+            # 'user_name': request.user.last_name + request.user.first_name,
+            'user_name': request.user.username,
         })
 
         # tasks = serializers.serialize("json", all_task)
@@ -173,10 +174,17 @@ class AddTask(APIView):
             notice_tester=notice_tester,
             notice_operator=notice_operator,
             sql=sql,
-            creator=request.user.id,
+            creator=request.user,
         )
 
         task_obj.repositorys.add(*repositorys_obj)
+
+        models.Log.objects.create(
+            task=task_obj,
+            operator=request.user,
+            operate_type=models.OperateType.objects.filter(id=1)[0],
+            detail="新增新更新包"
+        )
 
         return redirect('/publish/tasklist')
 
@@ -191,7 +199,8 @@ class EditTask(APIView):
             "task": task_obj,
             "repositorys": repository_objs,
             "logs": log_objs,
-            'user_name': request.user.last_name + request.user.first_name,
+            # 'user_name': request.user.last_name + request.user.first_name,
+            'user_name': request.user.username,
         })
         # task = serializers.serialize("json", task_obj)
         # return render(request, 'edittask.html',{"task":task})
@@ -233,10 +242,17 @@ class EditTask(APIView):
         task_obj.notice_tester = notice_tester
         task_obj.notice_operator = notice_operator
         task_obj.sql = sql
-        task_obj.creator = request.user.id
+        task_obj.creator = request.user
         task_obj.save()
 
         task_obj.repositorys.set(repositorys_obj)
+
+        models.Log.objects.create(
+            task=models.TaskList.objects.filter(id=task_id)[0],
+            operator=request.user,
+            operate_type=models.OperateType.objects.filter(id=2)[0],
+            detail="编辑更新包"
+        )
 
         return redirect('/publish/tasklist')
 
@@ -253,31 +269,31 @@ class Operate(APIView):
         # 更新到本地环境
         update_detail = []
         if operate_tpye_id == "5":
-            exec_result = os.popen(r"cd D:/git/mywork/test").read()
+            exec_result = os.popen('cd D:/git/mywork/test').read()
             os.popen("d:")
             # update_detail = update_detail + r"cd D:/git/mywork/test" + '\n' + str(exec_result) + '\n'
-            update_detail.append(r"执行命令：    cd D:/git/mywork/test")
-            update_detail.append("执行结果：    " + str(exec_result))
+            update_detail.append('执行命令：    cd D:/git/mywork/test')
+            update_detail.append('执行结果：    ' + str(exec_result))
 
             exec_result = os.popen("git pull").read()
             # update_detail = update_detail + "git pull" + '\n' + str(exec_result) + '\n'
-            update_detail.append("执行命令：    git pull")
-            update_detail.append("执行结果：    " + str(exec_result))
+            update_detail.append('执行命令：    git pull')
+            update_detail.append('执行结果：    ' + str(exec_result))
 
-            exec_result = os.popen("git checkout master").read()
+            exec_result = os.popen('git checkout master').read()
             # update_detail = update_detail + "git checkout master" + '\n' + str(exec_result) + '\n'
-            update_detail.append("执行命令：    git checkout master")
-            update_detail.append("执行结果：    " + str(exec_result))
+            update_detail.append('执行命令：    git checkout master')
+            update_detail.append('执行结果：    ' + str(exec_result))
 
-            exec_result = os.popen("git pull").read()
+            exec_result = os.popen('git pull').read()
             # update_detail = update_detail + "git pull" + '\n' + str(exec_result) + '\n'
-            update_detail.append("执行命令：    git pull")
-            update_detail.append("执行结果：    " + str(exec_result))
+            update_detail.append('执行命令：    git pull')
+            update_detail.append('执行结果：    ' + str(exec_result))
             # print(update_detail)
 
             models.Log.objects.create(
                 task=models.TaskList.objects.filter(id=task_id)[0],
-                operator=1,
+                operator=request.user,
                 operate_type=models.OperateType.objects.filter(id=operate_tpye_id)[0],
                 detail=update_detail
             )
@@ -308,7 +324,7 @@ class Operate(APIView):
             update_detail = '申请发版'
             models.Log.objects.create(
                 task=models.TaskList.objects.filter(id=task_id)[0],
-                operator=request.user.id,
+                operator=request.user,
                 operate_type=models.OperateType.objects.filter(id=operate_tpye_id)[0],
                 detail=update_detail
             )
@@ -319,7 +335,7 @@ class Operate(APIView):
             update_detail = '撤销申请发版'
             models.Log.objects.create(
                 task=models.TaskList.objects.filter(id=task_id)[0],
-                operator=request.user.id,
+                operator=request.user,
                 operate_type=models.OperateType.objects.filter(id=operate_tpye_id)[0],
                 detail=update_detail
             )
@@ -334,5 +350,9 @@ class GetLogDetail(APIView):
         log_id = request.GET.get('id')
         log_obj = models.Log.objects.filter(id=log_id)[0]
         log_detail = log_obj.detail
-
+        log_detail = log_detail.replace(r'[','')
+        log_detail = log_detail.replace(r']','')
+        log_detail = log_detail.replace(r'\n',',')
+        log_detail = log_detail.replace(r'\t','    ')
+        print(log_detail)
         return HttpResponse(log_detail)
