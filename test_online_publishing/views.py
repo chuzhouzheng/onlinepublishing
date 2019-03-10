@@ -80,7 +80,7 @@ class TaskList(APIView):
         except:
             return HttpResponse('请求出错')
 
-        all_task = models.TaskList.objects.all()
+        all_task = models.TaskList.objects.all().order_by("-id")
         page_obj = Pagination(current_page=page, total_count=all_task.count(),
                               base_url='/publish/tasklist/',
                               per_page=10, max_page=20)
@@ -99,10 +99,11 @@ class TaskList(APIView):
 
     def post(self, request):
         keyword = request.POST.get('keyword')
-        tasks = models.TaskList.objects.filter(name__icontains=keyword)
+        tasks = models.TaskList.objects.filter(name__icontains=keyword).order_by("-id")
         return render(request, 'tasklist.html', {
             "tasks": tasks.values(),
             'user_name': request.user.last_name + request.user.first_name,
+            'keyword':keyword,
         })
 
         # 返回搜索结果的任务列表不用分页了
@@ -194,7 +195,7 @@ class EditTask(APIView):
         task_id = request.GET.get("id")
         task_obj = models.TaskList.objects.filter(id=task_id)[0]
         repository_objs = task_obj.repositorys.all()
-        log_objs = models.Log.objects.filter(task_id=task_id)
+        log_objs = models.Log.objects.filter(task_id=task_id).order_by("-id")
         return render(request, 'edittask.html', {
             "task": task_obj,
             "repositorys": repository_objs,
