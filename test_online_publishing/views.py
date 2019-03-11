@@ -7,6 +7,8 @@ from django.views import View
 from test_online_publishing import models
 from rest_framework.views import APIView
 from common.mypage import Pagination
+from common.git_operate import GitOperate
+from test_online_publishing.config import GitPath
 
 
 class Login(APIView):
@@ -266,31 +268,17 @@ class Operate(APIView):
         task_id = request.POST.get("task_id")
         operate_tpye_id = request.POST.get('operate_tpye_id')
         task_obj = models.TaskList.objects.filter(id=task_id)[0]
+        repository_objs = task_obj.repositorys.all()
 
-        # 更新到本地环境
-        update_detail = []
-        if operate_tpye_id == "5":
-            exec_result = os.popen('cd D:/git/mywork/test').read()
-            os.popen("d:")
-            # update_detail = update_detail + r"cd D:/git/mywork/test" + '\n' + str(exec_result) + '\n'
-            update_detail.append('执行命令：    cd D:/git/mywork/test')
-            update_detail.append('执行结果：    ' + str(exec_result))
-
-            exec_result = os.popen("git pull").read()
-            # update_detail = update_detail + "git pull" + '\n' + str(exec_result) + '\n'
-            update_detail.append('执行命令：    git pull')
-            update_detail.append('执行结果：    ' + str(exec_result))
-
-            exec_result = os.popen('git checkout master').read()
-            # update_detail = update_detail + "git checkout master" + '\n' + str(exec_result) + '\n'
-            update_detail.append('执行命令：    git checkout master')
-            update_detail.append('执行结果：    ' + str(exec_result))
-
-            exec_result = os.popen('git pull').read()
-            # update_detail = update_detail + "git pull" + '\n' + str(exec_result) + '\n'
-            update_detail.append('执行命令：    git pull')
-            update_detail.append('执行结果：    ' + str(exec_result))
-            # print(update_detail)
+        # 更新仓库代码
+        if repository_objs.exists():
+            update_detail = []
+            for repository_obj in repository_objs:
+                # print(repository_obj.id,repository_obj.name,repository_obj.branch)
+                git_operate = GitOperate(repository_path=GitPath.local_env_path, repository_name=repository_obj.name,
+                                         branch_name=repository_obj.branch)
+                update_detail.extend(git_operate.run())
+                # print(update_detail)
 
             models.Log.objects.create(
                 task=models.TaskList.objects.filter(id=task_id)[0],
@@ -298,6 +286,9 @@ class Operate(APIView):
                 operate_type=models.OperateType.objects.filter(id=operate_tpye_id)[0],
                 detail=update_detail
             )
+
+        # 更新到本地环境
+        if operate_tpye_id == "5":
             return HttpResponse("本地环境更新成功")
 
         # 更新到开发环境
@@ -316,10 +307,9 @@ class Operate(APIView):
         elif operate_tpye_id == "25":
             return HttpResponse("生产环境更新成功")
 
-
         # 申请发版
-        elif operate_tpye_id == "100":
-            print(task_obj)
+        if operate_tpye_id == "100":
+            # print(task_obj)
             task_obj.is_publish = 1
             task_obj.save()
             update_detail = '申请发版'
@@ -342,8 +332,7 @@ class Operate(APIView):
             )
             return HttpResponse("撤销申请发版成功")
 
-        else:
-            return HttpResponse("操作失败，请联系管理员")
+        return HttpResponse("操作失败，请联系管理员")
 
 
 class GetLogDetail(APIView):
@@ -355,5 +344,4 @@ class GetLogDetail(APIView):
         log_detail = log_detail.replace(r']','')
         log_detail = log_detail.replace(r'\n',',')
         log_detail = log_detail.replace(r'\t','    ')
-        print(log_detail)
         return HttpResponse(log_detail)

@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/fontawesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="/static/sweetalert/sweetalert.css">
-{#    <link rel="stylesheet" href="/static/element-ui/index.css">#}
+    <link rel="stylesheet" href="/static/element-ui/index.css">
     <link rel="stylesheet" href="/static/css/edittask.css"/>
 {% endblock %}
 
@@ -248,11 +248,11 @@
     </div>
 
 
-
     <script src="/static/jquery-3.3.1.js"></script>
     <script src="/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
     <script src="/static/sweetalert/sweetalert.min.js"></script>
     <script>
+
         $("button[name='addrepository']").click(function () {
             var addrepository_Elements = '<tr><th class="text-nowrap" scope="row"><span><em> * </em>代码仓库：</span></th>' +
                 '<td colspan="1"><input type="text" name="repository" value="{{ task.repository_id.name }}" required=""></td>' +
@@ -390,13 +390,10 @@
 
                     data = data.split(",");
                     var log_detail = '';
-                    console.log(data.length);
                     for (var i = 0; i < data.length; i++) {
                         data[i] = data[i].replace(/["]/,'');
                         log_detail =log_detail + '<div>' + data[i] + '</div>';
-                        {#console.log(log_detail);#}
                     }
-                    console.log(log_detail);
                     $trElement.after('<tr><td colspan="5" style="color:green">' + log_detail + '</td></tr>');
 
 
