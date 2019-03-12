@@ -382,6 +382,14 @@
             var $tdElement = $(this).parent().parent().children();
             var $trElement = $(this).parent().parent();
             var id = $tdElement.eq(0).text();
+            var $logdetailEle = $trElement.next()[0];
+            {#console.log($logdetailEle);#}
+            if($logdetailEle){
+                if ($logdetailEle.className){
+                return false;
+                }
+            }
+
             $.ajax({
                 url: 'logdetail?id=' + id,
                 type: 'get',
@@ -394,7 +402,7 @@
                         data[i] = data[i].replace(/["]/,'');
                         log_detail =log_detail + '<div>' + data[i] + '</div>';
                     }
-                    $trElement.after('<tr><td colspan="5" style="color:green">' + log_detail + '</td></tr>');
+                    $trElement.after('<tr class="logdetail"><td colspan="5" style="color:green">' + log_detail + '</td></tr>');
 
 
                 }

@@ -105,7 +105,7 @@ class TaskList(APIView):
         return render(request, 'tasklist.html', {
             "tasks": tasks.values(),
             'user_name': request.user.last_name + request.user.first_name,
-            'keyword':keyword,
+            'keyword': keyword,
         })
 
         # 返回搜索结果的任务列表不用分页了
@@ -162,7 +162,6 @@ class AddTask(APIView):
                 # tag=tags,
             )
             repositorys_obj.append(repository_obj)
-
 
         envir_obj = models.Envir.objects.get(id=1)
 
@@ -270,12 +269,39 @@ class Operate(APIView):
         task_obj = models.TaskList.objects.filter(id=task_id)[0]
         repository_objs = task_obj.repositorys.all()
 
+        response = "操作失败，请联系管理员"
+        repository_path = ''
+        # 更新到本地环境
+        if operate_tpye_id == "5":
+            repository_path = GitPath.local_env_path
+            response = "本地环境更新成功"
+
+        # 更新到开发环境
+        elif operate_tpye_id == "10":
+            repository_path = GitPath.develop_env_path
+            response = "开发环境更新成功"
+
+        # 更新到测试环境
+        elif operate_tpye_id == "15":
+            repository_path = GitPath.test_env_path
+            response = "测试环境更新成功"
+
+        # 更新到预生产环境
+        elif operate_tpye_id == "20":
+            repository_path = GitPath.preproduct_env_path
+            response = "预生产环境更新成功"
+
+        # 更新到生产环境
+        elif operate_tpye_id == "25":
+            repository_path = GitPath.product_env_path
+            response = "生产环境更新成功"
+
         # 更新仓库代码
-        if repository_objs.exists():
+        if repository_path:
             update_detail = []
             for repository_obj in repository_objs:
                 # print(repository_obj.id,repository_obj.name,repository_obj.branch)
-                git_operate = GitOperate(repository_path=GitPath.local_env_path, repository_name=repository_obj.name,
+                git_operate = GitOperate(repository_path=repository_path, repository_name=repository_obj.name,
                                          branch_name=repository_obj.branch)
                 update_detail.extend(git_operate.run())
                 # print(update_detail)
@@ -286,26 +312,6 @@ class Operate(APIView):
                 operate_type=models.OperateType.objects.filter(id=operate_tpye_id)[0],
                 detail=update_detail
             )
-
-        # 更新到本地环境
-        if operate_tpye_id == "5":
-            return HttpResponse("本地环境更新成功")
-
-        # 更新到开发环境
-        elif operate_tpye_id == "10":
-            return HttpResponse("开发环境更新成功")
-
-        # 更新到测试环境
-        elif operate_tpye_id == "15":
-            return HttpResponse("测试环境更新成功")
-
-        # 更新到预生产环境
-        elif operate_tpye_id == "20":
-            return HttpResponse("预生产环境更新成功")
-
-        # 更新到生产环境
-        elif operate_tpye_id == "25":
-            return HttpResponse("生产环境更新成功")
 
         # 申请发版
         if operate_tpye_id == "100":
@@ -319,7 +325,7 @@ class Operate(APIView):
                 operate_type=models.OperateType.objects.filter(id=operate_tpye_id)[0],
                 detail=update_detail
             )
-            return HttpResponse("申请发版成功")
+            response = "申请发版成功"
 
         elif operate_tpye_id == "101":
             task_obj.is_publish = 0
@@ -330,9 +336,9 @@ class Operate(APIView):
                 operate_type=models.OperateType.objects.filter(id=operate_tpye_id)[0],
                 detail=update_detail
             )
-            return HttpResponse("撤销申请发版成功")
+            response = "撤销申请发版成功"
 
-        return HttpResponse("操作失败，请联系管理员")
+        return HttpResponse(response)
 
 
 class GetLogDetail(APIView):
@@ -340,8 +346,8 @@ class GetLogDetail(APIView):
         log_id = request.GET.get('id')
         log_obj = models.Log.objects.filter(id=log_id)[0]
         log_detail = log_obj.detail
-        log_detail = log_detail.replace(r'[','')
-        log_detail = log_detail.replace(r']','')
-        log_detail = log_detail.replace(r'\n',',')
-        log_detail = log_detail.replace(r'\t','    ')
+        log_detail = log_detail.replace(r'[', '')
+        log_detail = log_detail.replace(r']', '')
+        log_detail = log_detail.replace(r'\n', ',')
+        log_detail = log_detail.replace(r'\t', '    ')
         return HttpResponse(log_detail)
