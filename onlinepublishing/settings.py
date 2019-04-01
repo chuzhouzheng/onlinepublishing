@@ -99,6 +99,7 @@ DATABASES = {
         'NAME': 'onlinepublishing',
         'USER': 'root',
         'PASSWORD': '123456',
+        'CHARSET': 'utf-8',
     }
 }
 
