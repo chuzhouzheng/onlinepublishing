@@ -14,7 +14,6 @@ class TaskList(models.Model):
     notice_tester = models.TextField(null=True, verbose_name='测试须知')
     notice_operator = models.TextField(null=True, verbose_name='运维须知')
     sql = models.TextField(null=True, verbose_name='需要执行的sql')
-    # creator = models.IntegerField(null=False, verbose_name='创建人')
     creator = models.ForeignKey(to=User, on_delete=True, db_constraint=False, default=None, verbose_name='创建人，auth_user.id')
     createtime = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
     updatetime = models.DateTimeField(auto_now=True, verbose_name='更新时间')
@@ -46,7 +45,6 @@ class Repository(models.Model):
 class Log(models.Model):
     id = models.AutoField(primary_key=True, auto_created=True)
     task = models.ForeignKey(to='TaskList', on_delete=True, db_constraint=False, default=None, verbose_name='任务id')
-    # operator = models.IntegerField(null=False, verbose_name='操作人')
     operator = models.ForeignKey(to=User, on_delete=True, db_constraint=False, default=None, verbose_name='操作人，auth_user.id')
     operate_type = models.ForeignKey(to='OperateType', on_delete=True, db_constraint=False, verbose_name='操作类型，对应operate_type.id')
     operate_time = models.DateTimeField(auto_now=True, verbose_name='更新时间')

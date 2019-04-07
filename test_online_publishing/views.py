@@ -11,6 +11,7 @@ from common.git_operate import GitOperate
 from test_online_publishing.config import GitPath
 
 
+# 登录
 class Login(APIView):
     def get(self, request):
         return render(request, 'login.html')
@@ -19,7 +20,6 @@ class Login(APIView):
         msg = ''
         username = request.POST.get('username')
         password = request.POST.get('password')
-
         user = auth.authenticate(username=username, password=password)
         if user:
             auth.login(request, user)
@@ -27,7 +27,7 @@ class Login(APIView):
 
         elif username == '':
             msg = '账号不能为空！'
-        elif username != request.user.username:
+        elif not username == request.user.username:
             msg = '账号不存在！'
         elif username == request.user.first_name + request.user.first_name and not request.user.check_password(
                 password):
@@ -38,12 +38,14 @@ class Login(APIView):
         return render(request, 'login.html', {'msg': msg})
 
 
+# 注销
 class Logout(APIView):
     def get(self, request):
         auth.logout(request)
         return redirect('/publish/login/')
 
 
+# 修改密码
 class PasswordChange(APIView):
     def get(self, request):
         return render(request, 'password_change.html', {
@@ -60,8 +62,9 @@ class PasswordChange(APIView):
             return render(request, 'password_change.html', {
                 "msg": msg,
             })
-
         if request.user.check_password(old_password):
+            request.user.set_password(new_password)
+            request.user.save()
             return redirect('/publish/tasklist/')
         else:
             msg = '原密码不正确'
@@ -70,6 +73,7 @@ class PasswordChange(APIView):
             })
 
 
+# 任务列表
 class TaskList(APIView):
     def get(self, request):
         try:
@@ -93,7 +97,7 @@ class TaskList(APIView):
             "tasks": task_list,
             'page_html': page_html,
             # 'user_name': request.user.last_name + request.user.first_name,
-            'user_name': request.user.username,
+            # 'user_name': request.user.username,
         })
 
         # tasks = serializers.serialize("json", all_task)
@@ -130,6 +134,7 @@ class TaskList(APIView):
         # })
 
 
+# 添加任务
 class AddTask(APIView):
     def get(self, request):
         return render(request, 'addtask.html', {
@@ -191,6 +196,7 @@ class AddTask(APIView):
         return redirect('/publish/tasklist')
 
 
+# 编辑任务
 class EditTask(APIView):
     def get(self, request):
         task_id = request.GET.get("id")
@@ -259,6 +265,7 @@ class EditTask(APIView):
         return redirect('/publish/tasklist')
 
 
+# 任务操作记录
 class Operate(APIView):
     def get(self, request):
         pass
@@ -341,6 +348,7 @@ class Operate(APIView):
         return HttpResponse(response)
 
 
+# 获取任务操作日志
 class GetLogDetail(APIView):
     def get(self, request):
         log_id = request.GET.get('id')
