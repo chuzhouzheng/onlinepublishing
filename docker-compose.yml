@@ -13,8 +13,7 @@ services:
        volumes:
        - /root/mysql:/mysql
        command: python manage.py runserver 0.0.0.0:8000
-       depends_on:
-         - db
+
 #    nginx:
 #      image: docker_nginx.internal.hiii-life.com:latest
 #      ports:
