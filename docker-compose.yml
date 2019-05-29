@@ -11,7 +11,7 @@ services:
        ports:
        - "8000:8000"
        volumes:
-       - /root/mysql:/mysql
+       - /root/mywork:/mywork
        command: python manage.py runserver 0.0.0.0:8000
        networks:
          - docker_hiii-com
