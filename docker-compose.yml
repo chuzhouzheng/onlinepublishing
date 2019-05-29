@@ -1,0 +1,26 @@
+version: "3"
+services:
+    db:
+       image: hiii_mysql
+       environment:
+          MYSQL_DATABASE: onlinepublishing
+          MYSQL_ROOT_PASSWORD: fit4hiii
+       restart: always
+    web:
+       build: .
+       ports:
+       - "8000:8000"
+       volumes:
+       - /root/mysql:/mysql
+       command: python manage.py runserver 0.0.0.0:8000
+       depends_on:
+         - db
+#    nginx:
+#      image: docker_nginx.internal.hiii-life.com:latest
+#      ports:
+#        - "8888:8888"
+#      volumes:
+#        - ./devops/collected_static:/devops/static
+#        - ./nginx_config:/etc/nginx/conf.d
+#      depends_on:
+#        - web
