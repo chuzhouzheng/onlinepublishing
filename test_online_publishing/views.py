@@ -1,4 +1,5 @@
 import os
+import json
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib import auth
 from django.contrib.auth.models import User
@@ -18,6 +19,7 @@ class Login(APIView):
 
     def post(self, request):
         msg = ''
+        print(request.POST)
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = auth.authenticate(username=username, password=password)
@@ -359,3 +361,23 @@ class GetLogDetail(APIView):
         log_detail = log_detail.replace(r'\n', ',')
         log_detail = log_detail.replace(r'\t', '    ')
         return HttpResponse(log_detail)
+
+
+class Test(APIView):
+    def get(self, request):
+        data = [{
+            "a1": 1,
+            "a2": 2,
+        }]
+
+        return HttpResponse(json.dumps(data))
+        # return HttpResponse("hello get ")
+
+    def post(self, request):
+        data = [{
+            "a1":1,
+            "a2":2,
+        }]
+
+        return HttpResponse(json.dumps(data))
+        # return HttpResponse("hello post ")

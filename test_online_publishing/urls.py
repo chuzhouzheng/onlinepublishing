@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^edittask', views.EditTask.as_view()),
     url(r'^operate', views.Operate.as_view()),
     url(r'^logdetail', views.GetLogDetail.as_view()),
+    url(r'^test', views.Test.as_view()),
 ]

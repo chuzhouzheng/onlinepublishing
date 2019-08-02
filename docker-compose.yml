@@ -1,22 +1,18 @@
 version: "3"
 services:
-#    db:
-#       image: mysql
-#       environment:
-#          MYSQL_DATABASE: onlinepublishing
-#          MYSQL_ROOT_PASSWORD: fit4hiii
-#       restart: always
     web:
        build: .
+       image: onlinepublishing
+       container_name: onlinepublishing
        ports:
-       - "8000:8000"
+       - "8001:8001"
        volumes:
-       - /root/mywork:/mywork
-       command: python manage.py runserver 0.0.0.0:8000
-       networks:
-         - docker_hiii-com
-         links:
-           - docker_mysql.internal.hiii-life.com:hiii_mysql
+       - /onlinepublishing:/home/www/auto_test/src/onlinepublishing
+       command: python manage.py runserver 0.0.0.0:8001
+#       networks:
+#         - docker_hiii-com
+#         links:
+#           - docker_mysql.internal.hiii-life.com:hiii_mysql
 
 #    nginx:
 #      image: docker_nginx.internal.hiii-life.com:latest

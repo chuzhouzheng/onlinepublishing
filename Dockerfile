@@ -1,10 +1,9 @@
 FROM python:3.7
 
-RUN mkdir /code
-COPY requirements.txt /code
-RUN pip install -r /code/requirements.txt -i https://pypi.douban.com/simple
+RUN mkdir /onlinepublishing
+COPY . /onlinepublishing
+RUN pip install -r /onlinepublishing/requirements.txt -i https://pypi.douban.com/simple
 
-WORKDIR /code
-ADD . /code
-EXPOSE 8000
-CMD ["/bin/bash","run.sh"]
+WORKDIR /onlinepublishing
+EXPOSE 8001
+#CMD ["/bin/bash","run.sh"]

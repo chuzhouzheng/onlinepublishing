@@ -48,7 +48,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -94,11 +94,11 @@ WSGI_APPLICATION = 'onlinepublishing.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': '127.0.0.1',
+        'HOST': 'rm-j6c8700h9ml95h9v28o.mysql.rds.aliyuncs.com',
         'PORT': '3306',
-        'NAME': 'onlinepublishing',
+        'NAME': 'test2_test_onlinepublishing',
         'USER': 'root',
-        'PASSWORD': '123456',
+        'PASSWORD': 'mXej%mXaANegxzNTT8cs+8hLQXAQbLYZ',
         'CHARSET': 'utf-8',
     }
 }

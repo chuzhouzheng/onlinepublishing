@@ -11,7 +11,6 @@ from rest_framework.permissions import BasePermission
 from rest_framework.throttling import BaseThrottle
 from rest_framework import exceptions
 from rest_framework.parsers import JSONParser
-from storybook.models import UserToken
 from django.contrib.auth.models import User
 
 
