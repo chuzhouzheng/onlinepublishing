@@ -94,11 +94,11 @@ WSGI_APPLICATION = 'onlinepublishing.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': 'rm-j6c8700h9ml95h9v28o.mysql.rds.aliyuncs.com',
+        'HOST': 'localhost',
         'PORT': '3306',
-        'NAME': 'test2_test_onlinepublishing',
+        'NAME': 'test_onlinepublishing',
         'USER': 'root',
-        'PASSWORD': 'mXej%mXaANegxzNTT8cs+8hLQXAQbLYZ',
+        'PASSWORD': '12345678',
         'CHARSET': 'utf-8',
     }
 }
