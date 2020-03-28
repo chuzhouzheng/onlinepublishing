@@ -1,32 +1,17 @@
-version: "3"
+version: "3.0"
 services:
     web:
        build: .
        image: onlinepublishing
        container_name: onlinepublishing
        ports:
-       - "8001:8001"
+       - "8002:8002"
        volumes:
-       - /onlinepublishing:/home/www/auto_test/src/onlinepublishing
+       - .:/onlinepublishing
        command:
          - /bin/bash
          - -c
          - |
            python manage.py makemigrations
            python manage.py migrate
-           python manage.py runserver 0.0.0.0:8001
-
-#       networks:
-#         - docker_hiii-com
-#         links:
-#           - docker_mysql.internal.hiii-life.com:hiii_mysql
-
-#    nginx:
-#      image: docker_nginx.internal.hiii-life.com:latest
-#      ports:
-#        - "8888:8888"
-#      volumes:
-#        - ./devops/collected_static:/devops/static
-#        - ./nginx_config:/etc/nginx/conf.d
-#      depends_on:
-#        - web
+           python manage.py runserver 0.0.0.0:8002

@@ -5,5 +5,5 @@ COPY . /onlinepublishing
 RUN pip install -r /onlinepublishing/requirements.txt -i https://pypi.douban.com/simple
 
 WORKDIR /onlinepublishing
-EXPOSE 8001
+# EXPOSE 8002
 #CMD ["/bin/bash","run.sh"]
