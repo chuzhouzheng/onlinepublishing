@@ -98,7 +98,7 @@ DATABASES = {
         'PORT': '3306',
         'NAME': 'test_onlinepublishing',
         'USER': 'root',
-        'PASSWORD': '12345678',
+        'PASSWORD': '123456',
         'CHARSET': 'utf-8',
     }
 }
